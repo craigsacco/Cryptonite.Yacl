@@ -14,9 +14,8 @@ target_link_libraries(Cryptonite.Yaal.BZip2.Managed
 # language definition
 set_property(TARGET Cryptonite.Yaal.BZip2.Managed PROPERTY LINKER_LANGUAGE CXX)
 
-# CLR mode and .NET target version
+# CLR mode
 set_property(TARGET Cryptonite.Yaal.BZip2.Managed PROPERTY COMMON_LANGUAGE_RUNTIME "")
-set_property(TARGET Cryptonite.Yaal.BZip2.Managed PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DOTNET_VERSION})
 
 # C++ includes
 target_include_directories(Cryptonite.Yaal.BZip2.Managed

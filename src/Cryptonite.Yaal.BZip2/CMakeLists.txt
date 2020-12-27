@@ -11,8 +11,7 @@ target_link_libraries(Cryptonite.Yaal.BZip2
 # language definition
 set_property(TARGET Cryptonite.Yaal.BZip2 PROPERTY LINKER_LANGUAGE CSharp)
 
-# .NET target version and references
-set_property(TARGET Cryptonite.Yaal.BZip2 PROPERTY VS_DOTNET_TARGET_FRAMEWORK_VERSION ${DOTNET_VERSION})
+# .NET references
 set_property(TARGET Cryptonite.Yaal.BZip2 PROPERTY VS_DOTNET_REFERENCES
     "Microsoft.CSharp"
     "System"
