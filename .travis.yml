@@ -1,5 +1,6 @@
 language: csharp
 solution: Cryptonite.Yaal.sln
+dist: bionic
 install:
   - mkdir -p ./build
   - pushd ./build
