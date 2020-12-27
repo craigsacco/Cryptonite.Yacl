@@ -1,17 +1,8 @@
 language: csharp
 solution: Cryptonite.Yaal.sln
-dist: bionic
-addons:
-    apt:
-        sources:
-          - sourceline: 'deb https://apt.kitware.com/ubuntu/ bionic main'
-        packages:
-          - cmake
+os: windows
 install:
-  - mkdir -p ./build
-  - pushd ./build
-  - cmake ../src
-  - popd
+  - cmake -S ./src -B ./build
   - nuget restore ./build/Cryptonite.Yaal.sln
 script:
   - msbuild /p:Configuration=Release ./build/Cryptonite.Yaal.sln
