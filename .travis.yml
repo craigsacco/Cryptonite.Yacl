@@ -1,7 +1,10 @@
 language: csharp
 solution: Cryptonite.Yaal.sln
 install:
-  - cmake -S ./src -B ./build
+  - mkdir -p ./build
+  - pushd ./build
+  - cmake ../src
+  - popd
   - nuget restore ./build/Cryptonite.Yaal.sln
 script:
   - msbuild /p:Configuration=Release ./build/Cryptonite.Yaal.sln
