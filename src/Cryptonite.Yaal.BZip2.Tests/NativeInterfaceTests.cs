@@ -12,7 +12,7 @@ namespace Cryptonite.Yaal.BZip2.Tests
             // open output file
             NativeInterface.InternalHandle outputFile = NativeInterface.WriteOpen("Test.txt.bz2");
             Assert.True(outputFile.IsValid(true));
-
+            
             // write a byte array to compressed output
             byte[] inputData = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
             NativeInterface.Write(outputFile, inputData);
