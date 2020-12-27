@@ -1,6 +1,7 @@
 language: csharp
 solution: Cryptonite.Yaal.sln
 os: windows
+mono: none
 dotnet: 3.1
 install:
   - cmake -S ./src -B ./build
