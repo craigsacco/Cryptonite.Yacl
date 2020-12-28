@@ -1,5 +1,4 @@
-add_library(Cryptonite.Yaal.BZip2.Tests SHARED
-    NativeInterfaceTests.cs
+add_library(Cryptonite.Yaal.Tests.BZip2 SHARED
     StreamTests.cs
     #Properties/AssemblyInfo.cs
     #Properties/Settings.Designer.cs
@@ -7,21 +6,22 @@ add_library(Cryptonite.Yaal.BZip2.Tests SHARED
     )
 
 # project dependencies
-target_link_libraries(Cryptonite.Yaal.BZip2.Tests
+target_link_libraries(Cryptonite.Yaal.Tests.BZip2
     Cryptonite.Yaal.BZip2
+    Cryptonite.Yaal.Tests.Common
     )
 
 # language definition
-set_property(TARGET Cryptonite.Yaal.BZip2.Tests PROPERTY LINKER_LANGUAGE CSharp)
+set_property(TARGET Cryptonite.Yaal.Tests.BZip2 PROPERTY LINKER_LANGUAGE CSharp)
 
 # .NET references
-set_property(TARGET Cryptonite.Yaal.BZip2.Tests PROPERTY VS_DOTNET_REFERENCES
+set_property(TARGET Cryptonite.Yaal.Tests.BZip2 PROPERTY VS_DOTNET_REFERENCES
     "Microsoft.CSharp"
     "System"
     "System.Core"
     "WindowsBase"
     )
-set_property(TARGET Cryptonite.Yaal.BZip2.Tests PROPERTY VS_PACKAGE_REFERENCES
+set_property(TARGET Cryptonite.Yaal.Tests.BZip2 PROPERTY VS_PACKAGE_REFERENCES
     "xunit_2.4.1"
     "xunit.abstractions_2.0.3"
     "xunit.assert_2.4.1"

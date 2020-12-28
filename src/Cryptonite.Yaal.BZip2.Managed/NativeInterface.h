@@ -14,46 +14,24 @@ namespace Cryptonite
             public ref class NativeInterface
             {
             public:
-                ref class InternalHandle
+                ref class StreamHandle
                 {
                 public:
-                    InternalHandle(FILE* fileHandle, BZFILE* bzipHandle, bool write);
-
-                    property System::IntPtr^ FileHandle
-                    {
-                    public:
-                        System::IntPtr^ get();
-                    }
-
-                    property System::IntPtr^ BZipHandle
-                    {
-                    public:
-                        System::IntPtr^ get();
-                    }
-
-                    property System::Boolean Writing
-                    {
-                    public:
-                        System::Boolean get();
-                    }
-
-                    void Invalidate();
-                    bool IsValid();
-                    bool IsValid(bool expectWrite);
-
-                private:
-                    System::IntPtr^ m_fileHandle;
-                    System::IntPtr^ m_bzipHandle;
-                    bool m_writing;
+                    property System::IntPtr^ BZipStreamPointer;
+                    property System::IO::Stream^ Stream;
+                    property array<System::Byte>^ WorkingBuffer;
+                    property System::Boolean IsWriting;
+                    property System::Int64 CompressedLength;
+                    property System::Int64 UncompressedLength;
                 };
 
-                static InternalHandle^ WriteOpen(System::String^ outputFile);
-                static void Write(InternalHandle^ handle, array<System::Byte>^ inputData);
-                static void WriteFlush(InternalHandle^ handle);
-                static void WriteClose(InternalHandle^ handle);
-                static InternalHandle^ ReadOpen(System::String^ inputFile);
-                static array<System::Byte>^ Read(InternalHandle^ handle, System::Int32 maxBytes);
-                static void ReadClose(InternalHandle^ handle);
+                static StreamHandle^ BeginCompress(System::IO::Stream^ writeStream, System::UInt32 blockSize100k, System::UInt32 verbosity, System::UInt32 workFactor);
+                static void Compress(StreamHandle^ streamHandle, array<System::Byte>^ inputData);
+                static void EndCompress(StreamHandle^ streamHandle, System::Boolean abandon);
+
+                static StreamHandle^ BeginDecompress(System::IO::Stream^ readStream, System::UInt32 verbosity, System::Boolean small);
+                static array<System::Byte>^ Decompress(StreamHandle^ streamHandle, System::Int32 maxSize);
+                static void EndDecompress(StreamHandle^ streamHandle);
             };
         }
     }

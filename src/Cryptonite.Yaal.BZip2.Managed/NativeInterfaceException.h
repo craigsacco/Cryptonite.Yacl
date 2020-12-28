@@ -28,7 +28,7 @@ namespace Cryptonite
 
                     FOpenError = -100,
                     FCloseError = -101,
-                    InternalHandleError = -102,
+                    StreamHandleError = -102,
                 };
 
                 static NativeInterfaceException^ CreateException(ErrorType type);

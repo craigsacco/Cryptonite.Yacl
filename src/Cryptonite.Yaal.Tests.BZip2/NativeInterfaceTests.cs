@@ -1,8 +1,11 @@
 using System;
+using System.IO;
+using System.IO.Pipes;
+using System.Linq;
 using Cryptonite.Yaal.BZip2;
 using Xunit;
 
-namespace Cryptonite.Yaal.BZip2.Tests
+namespace Cryptonite.Yaal.Tests.BZip2
 {
     public class NativeInterfaceTests
     {

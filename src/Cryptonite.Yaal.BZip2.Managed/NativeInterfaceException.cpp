@@ -37,8 +37,8 @@ namespace Cryptonite
                     return gcnew NativeInterfaceException("Native interface fopen() error");
                 case ErrorType::FCloseError:
                     return gcnew NativeInterfaceException("Native interface fclose() error");
-                case ErrorType::InternalHandleError:
-                    return gcnew NativeInterfaceException("Native interface invalid handle");
+                case ErrorType::StreamHandleError:
+                    return gcnew NativeInterfaceException("Native interface stream handle");
                 default:
                     return gcnew NativeInterfaceException("Unknown error");
                 }

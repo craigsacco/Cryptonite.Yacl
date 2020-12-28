@@ -12,195 +12,269 @@ namespace Cryptonite
     {
         namespace BZip2
         {
-            NativeInterface::InternalHandle::InternalHandle(FILE* fileHandle, BZFILE* bzipHandle, bool writing)
-                : m_fileHandle(gcnew System::IntPtr(fileHandle))
-                , m_bzipHandle(gcnew System::IntPtr(bzipHandle))
-                , m_writing(writing)
+            NativeInterface::StreamHandle^ NativeInterface::BeginCompress(System::IO::Stream^ writeStream, System::UInt32 blockSize100k, System::UInt32 verbosity, System::UInt32 workFactor)
             {
-            }
-
-            System::IntPtr^ NativeInterface::InternalHandle::FileHandle::get()
-            {
-                return m_fileHandle;
-            }
-
-            System::IntPtr^ NativeInterface::InternalHandle::BZipHandle::get()
-            {
-                return m_bzipHandle;
-            }
-
-            System::Boolean NativeInterface::InternalHandle::Writing::get()
-            {
-                return m_writing;
-            }
-
-            void NativeInterface::InternalHandle::Invalidate()
-            {
-                m_fileHandle = System::IntPtr::Zero;
-                m_bzipHandle = System::IntPtr::Zero;
-            }
-
-            bool NativeInterface::InternalHandle::IsValid()
-            {
-                return (m_fileHandle->ToPointer() != nullptr) && (m_bzipHandle->ToPointer() != nullptr);
-            }
-
-            bool NativeInterface::InternalHandle::IsValid(bool expectWriting)
-            {
-                return IsValid() && (m_writing == expectWriting);
-            }
-
-            NativeInterface::InternalHandle^ NativeInterface::WriteOpen(System::String^ outputFile)
-            {
-                // open target file
-                pin_ptr<const wchar_t> outputFileWide = PtrToStringChars(outputFile);
-                FILE* fileHandle = _wfopen(outputFileWide, L"wb");
-                if (fileHandle == nullptr)
+                // create stream
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(malloc(sizeof(bz_stream)));
+                if (pStream == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::FOpenError);
+                    throw gcnew System::OutOfMemoryException();
                 }
 
-                // open BZip handle
-                int32_t bzipResult;
-                BZFILE* bzipHandle = BZ2_bzWriteOpen(&bzipResult, fileHandle, 1, 0, 0);
-                if (bzipResult != BZ_OK)
+                // initiate the compression stream
+                pStream->bzalloc = nullptr;
+                pStream->bzfree = nullptr;
+                pStream->opaque = nullptr;
+                int ret = BZ2_bzCompressInit(pStream, blockSize100k, verbosity, workFactor);
+                if (ret != BZ_OK)
                 {
-                    fclose(fileHandle);
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
-                }
+                    free(pStream);
+                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
+                };
 
-                // create and return handle
-                return gcnew InternalHandle(fileHandle, bzipHandle, true);
+                // return handle
+                pStream->avail_in = 0;
+                StreamHandle^ streamHandle = gcnew StreamHandle();
+                streamHandle->BZipStreamPointer = gcnew System::IntPtr(pStream);
+                streamHandle->Stream = writeStream;
+                streamHandle->WorkingBuffer = gcnew array<System::Byte>(BZ_MAX_UNUSED);
+                streamHandle->IsWriting = true;
+                streamHandle->CompressedLength = 0;
+                streamHandle->UncompressedLength = 0;
+                return streamHandle;
             }
 
-            void NativeInterface::Write(InternalHandle^ handle, array<System::Byte>^ inputData)
+            void NativeInterface::Compress(StreamHandle^ streamHandle, array<System::Byte>^ inputData)
             {
-                // check if handle is valid for this function
-                if (!handle->IsValid(true))
+                if (streamHandle->IsWriting == false || streamHandle->BZipStreamPointer->ToPointer() == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::InternalHandleError);
+                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
 
-                // write buffer into compressed output
-                int32_t bzipResult;
+                // recast stream pointer
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
+
+                // bail early if input data is empty
+                if (inputData->Length == 0)
+                {
+                    return;
+                }
+
+                // initiate compression operation
                 pin_ptr<System::Byte> pInputData = &inputData[0];
-                BZ2_bzWrite(&bzipResult, handle->BZipHandle->ToPointer(), pInputData, inputData->Length);
-                if (bzipResult != BZ_OK)
+                pStream->avail_in = inputData->Length;
+                pStream->next_in = reinterpret_cast<char*>(pInputData);
+                pin_ptr<System::Byte> pCompressedData = &streamHandle->WorkingBuffer[0];
+                while (true)
                 {
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
+                    // compress next chunk
+                    pStream->avail_out = BZ_MAX_UNUSED;
+                    pStream->next_out = reinterpret_cast<decltype(pStream->next_out)>(pCompressedData);
+                    int ret = BZ2_bzCompress(pStream, BZ_RUN);
+                    if (ret != BZ_RUN_OK)
+                    {
+                        throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
+                    }
+
+                    // write data to output stream
+                    if (pStream->avail_out < BZ_MAX_UNUSED)
+                    {
+                        streamHandle->Stream->Write(streamHandle->WorkingBuffer, 0, BZ_MAX_UNUSED - pStream->avail_out);
+                    }
+
+                    // break out if no more data is available
+                    if (pStream->avail_in == 0)
+                    {
+                        break;
+                    }
                 }
+
+                // update lengths
+                streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
+                streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
             }
 
-            void NativeInterface::WriteFlush(InternalHandle^ handle)
+            void NativeInterface::EndCompress(StreamHandle^ streamHandle, System::Boolean abandon)
             {
-                // check if handle is valid for this function
-                if (!handle->IsValid(true))
+                if (streamHandle->IsWriting == false || streamHandle->BZipStreamPointer->ToPointer() == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::InternalHandleError);
+                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
 
-                // flush the file handle
-                fflush(static_cast<FILE*>(handle->FileHandle->ToPointer()));
+                // recast stream pointer
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
+
+                // compress remaining data in the working buffer
+                if (abandon == false)
+                {
+                    pin_ptr<System::Byte> pCompressedData = &streamHandle->WorkingBuffer[0];
+                    while (true)
+                    {
+                        // compress next chunk
+                        pStream->avail_out = BZ_MAX_UNUSED;
+                        pStream->next_out = reinterpret_cast<decltype(pStream->next_out)>(pCompressedData);
+                        int ret = BZ2_bzCompress(pStream, BZ_FINISH);
+                        if (ret != BZ_FINISH_OK && ret != BZ_STREAM_END)
+                        {
+                            throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
+                        }
+
+                        // write data to stream
+                        if (pStream->avail_out < BZ_MAX_UNUSED)
+                        {
+                            streamHandle->Stream->Write(streamHandle->WorkingBuffer, 0, BZ_MAX_UNUSED - pStream->avail_out);
+                        }
+
+                        // break out if the input stream has been depleted
+                        if (ret == BZ_STREAM_END)
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                // complete the compression process and free resources
+                BZ2_bzCompressEnd(pStream);
+                free(pStream);
+                streamHandle->BZipStreamPointer = System::IntPtr::Zero;
+
+                // update lengths
+                streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
+                streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
             }
 
-            void NativeInterface::WriteClose(InternalHandle^ handle)
+            NativeInterface::StreamHandle^ NativeInterface::BeginDecompress(System::IO::Stream^ readStream, System::UInt32 verbosity, System::Boolean small)
             {
-                // check if handle is valid for this function
-                if (!handle->IsValid(true))
+                // create stream
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(malloc(sizeof(bz_stream)));
+                if (pStream == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::InternalHandleError);
+                    throw gcnew System::OutOfMemoryException();
                 }
 
-                // close BZip handle
-                int32_t bzipResult;
-                uint32_t bytesInLow32, bytesInHigh32, bytesOutLow32, bytesOutHigh32;
-                BZ2_bzWriteClose64(&bzipResult, handle->BZipHandle->ToPointer(), 0, &bytesInLow32, &bytesInHigh32, &bytesOutLow32, &bytesOutHigh32);
-                if (bzipResult != BZ_OK)
+                // initiate the decompression stream
+                pStream->bzalloc = nullptr;
+                pStream->bzfree = nullptr;
+                pStream->opaque = nullptr;
+                int ret = BZ2_bzDecompressInit(pStream, verbosity, small ? 1 : 0);
+                if (ret != BZ_OK)
                 {
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
-                }
+                    free(pStream);
+                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
+                };
 
-                // close file handle
-                fclose(static_cast<FILE*>(handle->FileHandle->ToPointer()));
-
-                // invalidate the handle
-                handle->Invalidate();
-
-                // calculate bytes in/out
-                uint64_t bytesIn = (static_cast<uint64_t>(bytesInHigh32) << 32) + bytesInLow32;
-                uint64_t bytesOut = (static_cast<uint64_t>(bytesOutHigh32) << 32) + bytesOutLow32;
+                // return handle
+                pStream->avail_in = 0;
+                StreamHandle^ streamHandle = gcnew StreamHandle();
+                streamHandle->BZipStreamPointer = gcnew System::IntPtr(pStream);
+                streamHandle->Stream = readStream;
+                streamHandle->WorkingBuffer = gcnew array<System::Byte>(BZ_MAX_UNUSED);
+                streamHandle->IsWriting = false;
+                streamHandle->CompressedLength = 0;
+                streamHandle->UncompressedLength = 0;
+                return streamHandle;
             }
 
-            NativeInterface::InternalHandle^ NativeInterface::ReadOpen(System::String^ inputFile)
+            array<System::Byte>^ NativeInterface::Decompress(StreamHandle^ streamHandle, System::Int32 maxSize)
             {
-                // open source file
-                pin_ptr<const wchar_t> inputFileWide = PtrToStringChars(inputFile);
-                FILE* fileHandle = _wfopen(inputFileWide, L"rb");
-                if (fileHandle == nullptr)
+                if (streamHandle->IsWriting == true || streamHandle->BZipStreamPointer->ToPointer() == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::FOpenError);
+                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
 
-                // open BZip handle
-                int32_t bzipResult;
-                BZFILE* bzipHandle = BZ2_bzReadOpen(&bzipResult, fileHandle, 0, 0, nullptr, 0);
-                if (bzipResult != BZ_OK)
+                // recast stream pointer
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
+
+                // bail early if maximum size is zero
+                if (maxSize == 0)
                 {
-                    fclose(fileHandle);
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
+                    return gcnew array<System::Byte>(0);
                 }
 
-                // create and return handle
-                return gcnew InternalHandle(fileHandle, bzipHandle, false);
-            }
-
-            array<System::Byte>^ NativeInterface::Read(InternalHandle^ handle, System::Int32 maxBytes)
-            {
-                // check if handle is valid for this function
-                if (!handle->IsValid(false))
-                {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::InternalHandleError);
-                }
-
-                // read data from compressed input
-                int32_t bzipResult = 0;
-                array<System::Byte>^ outputData = gcnew array<System::Byte>(maxBytes);
+                // initiate decompression operation
+                array<System::Byte>^ outputData = gcnew array<System::Byte>(maxSize);
                 pin_ptr<System::Byte> pOutputData = &outputData[0];
-                int32_t bytesRead = BZ2_bzRead(&bzipResult, handle->BZipHandle->ToPointer(), pOutputData, outputData->Length);
-                if (bzipResult != BZ_OK && bzipResult != BZ_STREAM_END)
+                pStream->avail_out = outputData->Length;
+                pStream->next_out = reinterpret_cast<char*>(pOutputData);
+                pin_ptr<System::Byte> pCompressedData = &streamHandle->WorkingBuffer[0];
+                while (true)
                 {
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
-                }
+                    System::Console::WriteLine(System::Int32(pStream->avail_in).ToString());
 
-                // if needed, truncate the array; then return it
-                if (bytesRead != maxBytes)
-                {
-                    System::Array::Resize(outputData, bytesRead);
+                    // read in next chunk from stream
+                    if (pStream->avail_in == 0)
+                    {
+                        pStream->avail_in = streamHandle->Stream->Read(streamHandle->WorkingBuffer, 0, streamHandle->WorkingBuffer->Length);;
+                        pStream->next_in = reinterpret_cast<char*>(pCompressedData);
+                    }
+
+                    System::Console::WriteLine(System::Int32(pStream->avail_in).ToString());
+
+                    bool done = false;
+                    if (pStream->avail_in != 0)
+                    {
+                        // decompress chunk
+                        int ret = BZ2_bzDecompress(pStream);
+                        if (ret != BZ_OK && ret != BZ_STREAM_END)
+                        {
+                            throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
+                        }
+
+                        System::Console::WriteLine(System::Int32(pStream->avail_out).ToString());
+                        System::Console::WriteLine(System::Int32(ret).ToString());
+
+                        // if reached the end of stream then truncate return buffer
+                        if (ret == BZ_STREAM_END)
+                        {
+                            done = true;
+                            System::Array::Resize(outputData, maxSize - pStream->avail_out);
+                        }
+
+                        // if there is no more data available in the return buffer then we're done
+                        if (pStream->avail_out == 0)
+                        {
+                            done = true;
+                        }
+                    }
+                    else
+                    {
+                        // nothing left in the input - truncate the output buffer
+                        done = true;
+                        System::Array::Resize(outputData, maxSize - pStream->avail_out);
+                    }
+
+                    // if we're done then update lengths and return array
+                    if (done)
+                    {
+                        // update lengths
+                        streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
+                        streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
+                        return outputData;
+                    }
+
+                    Sleep(1000);
+                    System::Console::WriteLine("");
                 }
-                return outputData;
             }
 
-            void NativeInterface::ReadClose(InternalHandle^ handle)
+            void NativeInterface::EndDecompress(StreamHandle^ streamHandle)
             {
-                // check if handle is valid for this function
-                if (!handle->IsValid(false))
+                if (streamHandle->IsWriting == true || streamHandle->BZipStreamPointer->ToPointer() == nullptr)
                 {
-                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::InternalHandleError);
+                    throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
 
-                // close BZip handle
-                int32_t bzipResult;
-                BZ2_bzReadClose(&bzipResult, handle->BZipHandle->ToPointer());
-                if (bzipResult != BZ_OK)
-                {
-                    throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(bzipResult));
-                }
+                // recast stream pointer
+                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
 
-                // close file handle
-                fclose(static_cast<FILE*>(handle->FileHandle->ToPointer()));
+                // complete the decompression process and free resources
+                BZ2_bzDecompressEnd(pStream);
+                free(pStream);
+                streamHandle->BZipStreamPointer = System::IntPtr::Zero;
 
-                // invalidate the handle
-                handle->Invalidate();
+                // update lengths
+                streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
+                streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
             }
         }
     }
