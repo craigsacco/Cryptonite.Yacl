@@ -7,13 +7,13 @@ namespace Cryptonite.Yaal.BZip2
 {
     public class BZip2CompressStream : BZip2BaseStream
     {
-        private readonly BZip2CompressStreamOptions m_options;
+        private readonly BZip2CompressStreamSettings m_options;
 
-        public BZip2CompressStream(Stream innerStream) : this(innerStream, new BZip2CompressStreamOptions())
+        public BZip2CompressStream(Stream innerStream) : this(innerStream, new BZip2CompressStreamSettings())
         {
         }
 
-        public BZip2CompressStream(Stream innerStream, BZip2CompressStreamOptions options)
+        public BZip2CompressStream(Stream innerStream, BZip2CompressStreamSettings options)
         {
             m_options = options;
             m_streamHandle = NativeInterface.BeginCompress(innerStream,

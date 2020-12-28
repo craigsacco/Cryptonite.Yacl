@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Cryptonite.Yaal.Common
 {
-    public interface IStreamOptions
+    public interface IStreamSettings
     {
-        IList<IStreamOption> Options { get; }
+        IList<IStreamSetting> Options { get; }
     }
 }

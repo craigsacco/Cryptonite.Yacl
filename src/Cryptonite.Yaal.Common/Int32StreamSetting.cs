@@ -2,7 +2,7 @@ using System;
 
 namespace Cryptonite.Yaal.Common
 {
-    public abstract class Int32StreamOption : StreamOption<Int32>
+    public abstract class Int32StreamSetting : StreamSetting<Int32>
     {
         public Int32 Minimum { get; private set; }
 
@@ -10,15 +10,15 @@ namespace Cryptonite.Yaal.Common
 
         public Int32 Step { get; private set; }
 
-        protected Int32StreamOption(Int32 value) : this(value, Int32.MinValue, Int32.MaxValue)
+        protected Int32StreamSetting(Int32 value) : this(value, Int32.MinValue, Int32.MaxValue)
         {
         }
 
-        protected Int32StreamOption(Int32 value, Int32 minimum, Int32 maximum) : this(value, minimum, maximum, 1)
+        protected Int32StreamSetting(Int32 value, Int32 minimum, Int32 maximum) : this(value, minimum, maximum, 1)
         {
         }
 
-        protected Int32StreamOption(Int32 value, Int32 minimum, Int32 maximum,  Int32 step)
+        protected Int32StreamSetting(Int32 value, Int32 minimum, Int32 maximum,  Int32 step)
         {
             if (minimum >= maximum)
             {

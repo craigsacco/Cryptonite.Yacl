@@ -2,9 +2,9 @@ using System;
 
 namespace Cryptonite.Yaal.Common
 {
-    public abstract class BoolStreamOption : StreamOption<Boolean>
+    public abstract class BoolStreamSetting : StreamSetting<Boolean>
     {
-        protected BoolStreamOption(Boolean value)
+        protected BoolStreamSetting(Boolean value)
         {
             Value = value;
         }

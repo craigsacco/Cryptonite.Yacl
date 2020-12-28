@@ -2,7 +2,7 @@ using System;
 
 namespace Cryptonite.Yaal.Common
 {
-    public interface IStreamOption
+    public interface IStreamSetting
     {
         String Name { get; }
 
