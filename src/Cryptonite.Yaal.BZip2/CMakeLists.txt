@@ -1,7 +1,12 @@
 add_library(Cryptonite.Yaal.BZip2 SHARED
     BZip2BaseStream.cs
+    BZip2BlockSizeStreamOption.cs
     BZip2CompressStream.cs
+    BZip2CompressStreamOptions.cs
     BZip2DecompressStream.cs
+    BZip2DecompressStreamOptions.cs
+    BZip2SmallDecompressStreamOption.cs
+    BZip2WorkFactorStreamOption.cs
     )
 
 # project dependencies

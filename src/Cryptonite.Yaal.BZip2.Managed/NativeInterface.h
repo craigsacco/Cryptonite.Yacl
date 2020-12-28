@@ -21,11 +21,12 @@ namespace Cryptonite
                     property System::IO::Stream^ Stream;
                     property array<System::Byte>^ WorkingBuffer;
                     property System::Boolean IsWriting;
+                    property System::Boolean IsEnded;
                     property System::Int64 CompressedLength;
                     property System::Int64 UncompressedLength;
                 };
 
-                static StreamHandle^ BeginCompress(System::IO::Stream^ writeStream, System::UInt32 blockSize100k, System::UInt32 verbosity, System::UInt32 workFactor);
+                static StreamHandle^ BeginCompress(System::IO::Stream^ writeStream, System::Int32 blockSize100k, System::Int32 verbosity, System::Int32 workFactor);
                 static void Compress(StreamHandle^ streamHandle, array<System::Byte>^ inputData);
                 static void EndCompress(StreamHandle^ streamHandle, System::Boolean abandon);
 

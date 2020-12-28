@@ -9,11 +9,12 @@ namespace Cryptonite.Yaal.BZip2
         protected NativeInterface.StreamHandle m_streamHandle;
 
         public override bool CanSeek => false;
-
         
         public override long Length => m_streamHandle.UncompressedLength;
 
         public long CompressedLength => m_streamHandle.CompressedLength;
+
+        protected bool IsClosed => m_streamHandle.IsEnded;
 
         public override long Position
         {

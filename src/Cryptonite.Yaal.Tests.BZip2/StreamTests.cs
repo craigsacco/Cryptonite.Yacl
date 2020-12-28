@@ -17,25 +17,27 @@ namespace Cryptonite.Yaal.Tests.BZip2
 
             // compress data using a single write operation
             var memoryStream1 = new MemoryStream();
-            var compressStream1 = new BZip2CompressStream(memoryStream1);
-            compressStream1.Write(originalData, 0, originalData.Length);
-            compressStream1.Close();
+            using (var compressStream = new BZip2CompressStream(memoryStream1))
+            {
+                compressStream.Write(originalData, 0, originalData.Length);
+            }
 
             // compress data using a multiple write operations
             var memoryStream2 = new MemoryStream();
-            var compressStream2 = new BZip2CompressStream(memoryStream2);
-            int offset = 0;
-            int chunk = 500;
-            while (offset < originalData.Length)
+            using (var compressStream = new BZip2CompressStream(memoryStream2))
             {
-                if (offset + chunk > originalData.Length)
+                int offset = 0;
+                int chunk = 500;
+                while (offset < originalData.Length)
                 {
-                    chunk = originalData.Length - offset;
+                    if (offset + chunk > originalData.Length)
+                    {
+                        chunk = originalData.Length - offset;
+                    }
+                    compressStream.Write(originalData, offset, chunk);
+                    offset += chunk;
                 }
-                compressStream2.Write(originalData, offset, chunk);
-                offset += chunk;
             }
-            compressStream2.Close();
 
             // compare the two compressed streams
             Assert.True(memoryStream1.Position == memoryStream2.Position);
@@ -50,50 +52,54 @@ namespace Cryptonite.Yaal.Tests.BZip2
 
             // compress data using a single write operation
             var memoryStream = new MemoryStream();
-            var compressStream = new BZip2CompressStream(memoryStream);
-            compressStream.Write(originalData, 0, originalData.Length);
-            compressStream.Close();
+            using (var compressStream = new BZip2CompressStream(memoryStream))
+            {
+                compressStream.Write(originalData, 0, originalData.Length);
+            }
 
             // decompress data into a large buffer
             memoryStream.Position = 0;  // reset position
-            var decompressStream1 = new BZip2DecompressStream(memoryStream);
-            var decompressData1 = new byte[originalData.Length + 10000];
-            var decompressLength1 = decompressStream1.Read(decompressData1, 0, decompressData1.Length);
-            decompressStream1.Close();
-            Assert.Equal(originalData.Length, decompressLength1);
-            Array.Resize(ref decompressData1, decompressLength1);
-            Assert.Equal(originalData, decompressData1);
+            using (var decompressStream = new BZip2DecompressStream(memoryStream))
+            {
+                var decompressData = new byte[originalData.Length + 10000];
+                var decompressLength = decompressStream.Read(decompressData, 0, decompressData.Length);
+                Assert.Equal(originalData.Length, decompressLength);
+                Array.Resize(ref decompressData, decompressLength);
+                Assert.Equal(originalData, decompressData);
+            }
 
             // decompress data into a buffer of the same size as the original
             memoryStream.Position = 0;  // reset position
-            var decompressStream2 = new BZip2DecompressStream(memoryStream);
-            var decompressData2 = new byte[originalData.Length];
-            var decompressLength2 = decompressStream2.Read(decompressData2, 0, decompressData2.Length);
-            decompressStream2.Close();
-            Assert.Equal(originalData.Length, decompressLength2);
-            Array.Resize(ref decompressData2, decompressLength2);
-            Assert.Equal(originalData, decompressData2);
+            using (var decompressStream = new BZip2DecompressStream(memoryStream))
+            {
+                var decompressData = new byte[originalData.Length];
+                var decompressLength = decompressStream.Read(decompressData, 0, decompressData.Length);
+                Assert.Equal(originalData.Length, decompressLength);
+                Array.Resize(ref decompressData, decompressLength);
+                Assert.Equal(originalData, decompressData);
+            }
 
             // decompress data using multiple read operations
             memoryStream.Position = 0;  // reset position
-            var decompressStream3 = new BZip2DecompressStream(memoryStream);
-            var decompressData3 = new byte[originalData.Length];
-            var decompressLength3 = 0;
-            int chunk = 500;
-            while (decompressLength3 < originalData.Length)
+            using (var decompressStream = new BZip2DecompressStream(memoryStream))
             {
-                if (decompressLength3 + chunk > originalData.Length)
+                var decompressData = new byte[originalData.Length];
+                var decompressLength = 0;
+                int chunk = 500;
+                while (decompressLength < originalData.Length)
                 {
-                    chunk = originalData.Length - decompressLength3;
+                    if (decompressLength + chunk > originalData.Length)
+                    {
+                        chunk = originalData.Length - decompressLength;
+                    }
+                    var length = decompressStream.Read(decompressData, decompressLength, chunk);
+                    Assert.Equal(chunk, length);
+                    decompressLength += length;
                 }
-                var length = decompressStream3.Read(decompressData3, decompressLength3, chunk);
-                Assert.Equal(chunk, length);
-                decompressLength3 += length;
+                Assert.Equal(originalData.Length, decompressLength);
+                Array.Resize(ref decompressData, decompressLength);
+                Assert.Equal(originalData, decompressData);
             }
-            decompressStream3.Close();
-            Assert.Equal(originalData.Length, decompressLength3);
-            Array.Resize(ref decompressData3, decompressLength3);
-            Assert.Equal(originalData, decompressData3);
         }
     }
 }

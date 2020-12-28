@@ -1,4 +1,10 @@
 add_library(Cryptonite.Yaal.Common SHARED
+    BoolStreamOption.cs
+    Int32StreamOption.cs
+    IStreamOption.cs
+    IStreamOptions.cs
+    StreamOption.cs
+    StreamOptions.cs
     StreamUtilities.cs
     )
 

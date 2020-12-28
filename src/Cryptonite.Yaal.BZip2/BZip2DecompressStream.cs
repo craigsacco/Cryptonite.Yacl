@@ -7,9 +7,16 @@ namespace Cryptonite.Yaal.BZip2
 {
     public class BZip2DecompressStream : BZip2BaseStream
     {
-        public BZip2DecompressStream(Stream innerStream)
+        private readonly BZip2DecompressStreamOptions m_options;
+
+        public BZip2DecompressStream(Stream innerStream) : this(innerStream, new BZip2DecompressStreamOptions())
         {
-            m_streamHandle = NativeInterface.BeginDecompress(innerStream, 0, false);
+        }
+
+        public BZip2DecompressStream(Stream innerStream, BZip2DecompressStreamOptions options)
+        {
+            m_options = options;
+            m_streamHandle = NativeInterface.BeginDecompress(innerStream, 0, m_options.SmallDecompress.Value);
         }
 
         public override bool CanRead => true;
