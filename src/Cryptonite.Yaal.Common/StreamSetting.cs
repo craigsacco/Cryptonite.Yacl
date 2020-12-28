@@ -8,7 +8,7 @@ namespace Cryptonite.Yaal.Common
 
         public abstract T Value { get; set; }
 
-        public String PrintableValue => Value.ToString();
+        public abstract String DisplayValue { get; }
 
         public abstract Type UnderlyingType { get; }
     }

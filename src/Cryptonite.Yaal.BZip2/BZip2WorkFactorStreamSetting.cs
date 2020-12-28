@@ -13,5 +13,7 @@ namespace Cryptonite.Yaal.BZip2
         }
 
         public override String Name => "Work Factor";
+
+        public override string DisplayValue => Value.ToString();
     }
 }

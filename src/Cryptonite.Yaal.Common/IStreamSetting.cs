@@ -6,7 +6,7 @@ namespace Cryptonite.Yaal.Common
     {
         String Name { get; }
 
-        String PrintableValue { get; }
+        String DisplayValue { get; }
 
         Type UnderlyingType { get; }
     }

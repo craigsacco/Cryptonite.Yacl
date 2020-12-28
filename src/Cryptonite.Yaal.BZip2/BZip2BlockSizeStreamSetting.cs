@@ -13,5 +13,7 @@ namespace Cryptonite.Yaal.BZip2
         }
 
         public override String Name => "Block Size";
+
+        public override string DisplayValue => String.Format("{0} kB", Value);
     }
 }

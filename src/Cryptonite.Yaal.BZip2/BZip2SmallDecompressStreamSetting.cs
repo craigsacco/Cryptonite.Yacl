@@ -12,6 +12,8 @@ namespace Cryptonite.Yaal.BZip2
         {
         }
 
-        public override String Name => "Small Decompress Mode";
+        public override String Name => "Small Decompress Mode?";
+
+        public override string DisplayValue => Value ? "Yes" : "No";
     }
 }
