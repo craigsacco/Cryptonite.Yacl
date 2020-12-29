@@ -10,6 +10,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # 3rd-party library directories
 set(LIB_BZIP2_PATH ../../lib/bzip2-1.0.8)
+set(LIB_XZUTILS_PATH ../../lib/xz-5.2.5)
 
 # .NET target framework
 #set(CMAKE_DOTNET_TARGET_FRAMEWORK "netcoreapp3.1")  # required for .NET Core/Standard
@@ -21,6 +22,7 @@ add_subdirectory(Cryptonite.Yaal.BZip2)
 add_subdirectory(Cryptonite.Yaal.BZip2.Native)
 add_subdirectory(Cryptonite.Yaal.BZip2.Managed)
 add_subdirectory(Cryptonite.Yaal.GZip)
+add_subdirectory(Cryptonite.Yaal.XZ.Native)
 add_subdirectory(Cryptonite.Yaal.Tests.Common)
 add_subdirectory(Cryptonite.Yaal.Tests.BZip2)
 add_subdirectory(Cryptonite.Yaal.Cmd)
