@@ -6,6 +6,7 @@ add_executable(Cryptonite.Yaal.Cmd
 target_link_libraries(Cryptonite.Yaal.Cmd
     Cryptonite.Yaal.Common
     Cryptonite.Yaal.BZip2
+    Cryptonite.Yaal.GZip
     )
 
 # language definition

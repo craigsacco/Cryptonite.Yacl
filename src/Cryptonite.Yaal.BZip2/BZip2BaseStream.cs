@@ -19,22 +19,22 @@ namespace Cryptonite.Yaal.BZip2
         public override long Position
         {
             get => m_streamHandle.UncompressedLength;
-            set => throw new InvalidOperationException("Stream position is not settable");
+            set => throw new NotSupportedException("Stream position is not settable");
         }
 
         public override void Flush()
         {
-            throw new InvalidOperationException("Stream is not flushable");
+            throw new NotSupportedException("Stream is not flushable");
         }
 
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new InvalidOperationException("Stream is not seekable");
+            throw new NotSupportedException("Stream is not seekable");
         }
 
         public override void SetLength(long value)
         {
-            throw new InvalidOperationException("Stream length is not adjustible");
+            throw new NotSupportedException("Stream length is not adjustible");
         }
     }
 }

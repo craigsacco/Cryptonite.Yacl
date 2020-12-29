@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Cryptonite.Yaal.Common;
 using Cryptonite.Yaal.BZip2;
+using Cryptonite.Yaal.GZip;
 using NDesk.Options;
 
 namespace Cryptonite.Yaal.Cmd
@@ -13,8 +14,16 @@ namespace Cryptonite.Yaal.Cmd
     {
         public const String BZip2CompressMethod = "bzip2";
         public const String BZip2DecompressMethod = "bunzip2";
+        public const String GZipCompressMethod = "gzip";
+        public const String GZipDecompressMethod = "gunzip";
+
         public static readonly IReadOnlyCollection<String> Methods = new ReadOnlyCollection<String>(
-            new List<string> { BZip2CompressMethod, BZip2DecompressMethod }
+            new List<string> {
+                BZip2CompressMethod,
+                BZip2DecompressMethod,
+                GZipCompressMethod,
+                GZipDecompressMethod
+            }
         );
 
         private String m_method = null;
@@ -136,6 +145,16 @@ namespace Cryptonite.Yaal.Cmd
                     m_compress = false;
                     break;
 
+                case GZipCompressMethod:
+                    m_processStreamSettings = new GZipCompressStreamSettings();
+                    m_compress = true;
+                    break;
+
+                case GZipDecompressMethod:
+                    m_processStreamSettings = new GZipDecompressStreamSettings();
+                    m_compress = false;
+                    break;
+
                 default:
                     throw new InvalidOperationException(@"Method name {m_method} is not handled");
             }
@@ -164,6 +183,12 @@ namespace Cryptonite.Yaal.Cmd
 
                 case BZip2DecompressMethod:
                     return new BZip2DecompressStream(innerStream, m_processStreamSettings as BZip2DecompressStreamSettings);
+
+                case GZipCompressMethod:
+                    return new GZipCompressStream(innerStream, m_processStreamSettings as GZipCompressStreamSettings);
+
+                case GZipDecompressMethod:
+                    return new GZipDecompressStream(innerStream, m_processStreamSettings as GZipDecompressStreamSettings);
 
                 default:
                     throw new InvalidOperationException(@"Method name {m_method} is not handled");
