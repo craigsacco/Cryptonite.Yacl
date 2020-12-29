@@ -55,7 +55,7 @@ namespace Cryptonite.Yaal.Cmd
             {
                 using (var inputStream = File.OpenRead(m_inputFile.FullName))
                 {
-                    using (var outputStream = File.OpenWrite(m_outputFile.FullName))
+                    using (var outputStream = File.Create(m_outputFile.FullName))
                     {
                         using (var processStream = CreateProcessStream(outputStream))
                         {
@@ -82,7 +82,7 @@ namespace Cryptonite.Yaal.Cmd
                 {
                     using (var processStream = CreateProcessStream(inputStream))
                     {
-                        using (var outputStream = File.OpenWrite(m_outputFile.FullName))
+                        using (var outputStream = File.Create(m_outputFile.FullName))
                         {
                             Console.WriteLine("Decompression Process:");
                             byte[] inputData = new byte[1024 * 1024];  // 1MB
