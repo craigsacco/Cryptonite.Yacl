@@ -87,6 +87,22 @@ target_include_directories(Cryptonite.Yaal.XZ.Native
             ${LIB_XZUTILS_PATH}/src/liblzma/rangecoder
             ${LIB_XZUTILS_PATH}/src/liblzma/delta
             ${LIB_XZUTILS_PATH}/src/liblzma/simple
-            ${LIB_XZUTILS_PATH}/windows/vs2019
     )
 target_compile_definitions(Cryptonite.Yaal.XZ.Native PRIVATE HAVE_CONFIG_H=1)
+
+# include appropriate config.h header depending on compiler
+if(MSVC)
+    if(MSVC_TOOLSET_VERSION EQUAL 120)
+        target_include_directories(Cryptonite.Yaal.XZ.Native PRIVATE ${LIB_XZUTILS_PATH}/windows/vs2013)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 140)
+        target_include_directories(Cryptonite.Yaal.XZ.Native PRIVATE ${LIB_XZUTILS_PATH}/windows/vs2013)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 141)
+        target_include_directories(Cryptonite.Yaal.XZ.Native PRIVATE ${LIB_XZUTILS_PATH}/windows/vs2017)
+    elseif(MSVC_TOOLSET_VERSION EQUAL 142)
+        target_include_directories(Cryptonite.Yaal.XZ.Native PRIVATE ${LIB_XZUTILS_PATH}/windows/vs2019)
+    else()
+        error("Unsupported MSVC version")
+    endif()
+else()
+    error("Only MSVC is supported")
+endif()
