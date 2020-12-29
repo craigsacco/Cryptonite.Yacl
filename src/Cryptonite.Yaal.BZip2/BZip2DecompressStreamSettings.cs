@@ -13,12 +13,12 @@ namespace Cryptonite.Yaal.BZip2
             SmallDecompress = new BZip2SmallDecompressStreamSetting();
         }
 
-        public override IList<IStreamSetting> Options
+        public override IList<IStreamSetting> Settings
         {
             get
             {
-                IStreamSetting[] options = { SmallDecompress };
-                return new List<IStreamSetting>(options);
+                IStreamSetting[] settings = { SmallDecompress };
+                return new List<IStreamSetting>(settings);
             }
         }
     }

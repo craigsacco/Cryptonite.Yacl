@@ -10,10 +10,8 @@ set_property(TARGET Cryptonite.Yaal.Tests.Common PROPERTY LINKER_LANGUAGE CSharp
 
 # .NET references
 set_property(TARGET Cryptonite.Yaal.Tests.Common PROPERTY VS_DOTNET_REFERENCES
-    "Microsoft.CSharp"
     "System"
     "System.Core"
-    "WindowsBase"
     )
 set_property(TARGET Cryptonite.Yaal.Tests.Common PROPERTY VS_PACKAGE_REFERENCES
     "xunit_2.4.1"

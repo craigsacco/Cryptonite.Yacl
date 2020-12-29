@@ -20,8 +20,6 @@ set_property(TARGET Cryptonite.Yaal.BZip2 PROPERTY LINKER_LANGUAGE CSharp)
 
 # .NET references
 set_property(TARGET Cryptonite.Yaal.BZip2 PROPERTY VS_DOTNET_REFERENCES
-    "Microsoft.CSharp"
     "System"
     "System.Core"
-    "WindowsBase"
     )

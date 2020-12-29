@@ -4,7 +4,7 @@ using Cryptonite.Yaal.Common;
 
 namespace Cryptonite.Yaal.BZip2
 {
-    public abstract class BZip2BaseStream : Stream, IDisposable
+    public abstract class BZip2BaseStream : BaseStream
     {
         protected NativeInterface.StreamHandle m_streamHandle;
 
@@ -12,7 +12,7 @@ namespace Cryptonite.Yaal.BZip2
         
         public override long Length => m_streamHandle.UncompressedLength;
 
-        public long CompressedLength => m_streamHandle.CompressedLength;
+        public override long CompressedLength => m_streamHandle.CompressedLength;
 
         protected bool IsClosed => m_streamHandle.IsEnded;
 

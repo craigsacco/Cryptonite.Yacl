@@ -5,6 +5,6 @@ namespace Cryptonite.Yaal.Common
 {
     public interface IStreamSettings
     {
-        IList<IStreamSetting> Options { get; }
+        IList<IStreamSetting> Settings { get; }
     }
 }

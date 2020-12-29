@@ -53,13 +53,20 @@ namespace Cryptonite.Yaal.Common
 
                 if ((value - Minimum) % Step != 0)
                 {
-                    throw new ArgumentException("New value does not meet the step requirement");
+                    throw new ArgumentException("Value does not meet the step requirement");
                 }
 
                 m_value = value;
+                OnPropertyChanged();
+                OnPropertyChanged("DisplayValue");
             }
         }
 
         public override Type UnderlyingType => typeof(Int32);
+
+        public override void Parse(String value)
+        {
+            Value = Int32.Parse(value);
+        }
     }
 }

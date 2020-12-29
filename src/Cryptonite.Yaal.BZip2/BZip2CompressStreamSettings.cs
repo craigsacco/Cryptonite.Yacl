@@ -16,12 +16,12 @@ namespace Cryptonite.Yaal.BZip2
             WorkFactor = new BZip2WorkFactorStreamSetting();
         }
 
-        public override IList<IStreamSetting> Options
+        public override IList<IStreamSetting> Settings
         {
             get
             {
-                IStreamSetting[] options = { BlockSize, WorkFactor };
-                return new List<IStreamSetting>(options);
+                IStreamSetting[] settings = { BlockSize, WorkFactor };
+                return new List<IStreamSetting>(settings);
             }
         }
     }

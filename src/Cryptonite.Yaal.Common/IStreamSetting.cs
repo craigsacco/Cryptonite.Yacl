@@ -6,8 +6,12 @@ namespace Cryptonite.Yaal.Common
     {
         String Name { get; }
 
+        String AbbreviatedName { get; }
+
         String DisplayValue { get; }
 
         Type UnderlyingType { get; }
+
+        void Parse(String value);
     }
 }
