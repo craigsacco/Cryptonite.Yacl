@@ -66,7 +66,6 @@ namespace Cryptonite.Yaal.Cmd
                                 var inputBytes = inputStream.Read(inputData, 0, inputData.Length);
                                 if (inputBytes == 0)
                                 {
-                                    Console.WriteLine("    Done");
                                     break;
                                 }
                                 processStream.Write(inputData, 0, inputBytes);
@@ -75,6 +74,8 @@ namespace Cryptonite.Yaal.Cmd
                         }
                     }
                 }
+
+                Console.WriteLine($"    Done - Compressed: {m_outputFile.Length}");
             }
             else
             {
@@ -91,7 +92,6 @@ namespace Cryptonite.Yaal.Cmd
                                 var inputBytes = processStream.Read(inputData, 0, inputData.Length);
                                 if (inputBytes == 0)
                                 {
-                                    Console.WriteLine("    Done");
                                     break;
                                 }
                                 outputStream.Write(inputData, 0, inputBytes);
@@ -100,6 +100,8 @@ namespace Cryptonite.Yaal.Cmd
                         }
                     }
                 }
+
+                Console.WriteLine("    Done");
             }
         }
 

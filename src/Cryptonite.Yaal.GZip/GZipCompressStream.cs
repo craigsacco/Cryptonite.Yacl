@@ -17,6 +17,7 @@ namespace Cryptonite.Yaal.GZip
         {
             m_options = options;
             m_stream = new GZipStream(innerStream, m_options.CompressionLevel.Value);
+            m_innerStream = innerStream;
         }
     }
 }

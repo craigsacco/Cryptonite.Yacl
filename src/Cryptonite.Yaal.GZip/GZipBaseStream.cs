@@ -8,6 +8,7 @@ namespace Cryptonite.Yaal.GZip
     public abstract class GZipBaseStream : BaseStream
     {
         protected GZipStream m_stream = null;
+        protected Stream m_innerStream = null;
 
         protected long m_length = 0;
         protected long m_compressedLength = 0;
@@ -16,7 +17,7 @@ namespace Cryptonite.Yaal.GZip
 
         public override bool CanRead => m_stream.CanRead;
 
-        public override bool CanSeek => m_stream.CanSeek;
+        public override bool CanSeek => false;
 
         public override bool CanWrite => m_stream.CanWrite;
 
@@ -35,8 +36,16 @@ namespace Cryptonite.Yaal.GZip
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            int returnedCount = m_stream.Read(buffer, offset, count);
+            // no nice way to determine length of compressed input, so will
+            // need to be determined by the stream wrapped by GZipStream
+
+            var positionBeforeRead = GetInnerStreamPosition();
+            var returnedCount = m_stream.Read(buffer, offset, count);
+            var positionAfterRead = GetInnerStreamPosition();
+
             m_length += returnedCount;
+            m_compressedLength += (positionAfterRead - positionBeforeRead);
+
             return returnedCount;
         }
 
@@ -52,12 +61,32 @@ namespace Cryptonite.Yaal.GZip
 
         public override void Write(byte[] buffer, int offset, int count)
         {
+            // no nice way to determine length of compressed input, so will
+            // need to be determined by the stream wrapped by GZipStream
+
+            var positionBeforeWrite = GetInnerStreamPosition();
             m_stream.Write(buffer, offset, count);
+            var positionAfterWrite = GetInnerStreamPosition();
+
             m_length += count;
+            m_compressedLength += (positionAfterWrite - positionBeforeWrite);
         }
+
         public override void Close()
         {
             m_stream.Close();
+        }
+
+        private long GetInnerStreamPosition()
+        {
+            try
+            {
+                return m_innerStream.Position;
+            }
+            catch
+            {
+                return 0;
+            }
         }
     }
 }
