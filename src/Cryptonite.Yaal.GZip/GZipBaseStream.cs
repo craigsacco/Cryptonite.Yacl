@@ -61,7 +61,7 @@ namespace Cryptonite.Yaal.GZip
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            // no nice way to determine length of compressed input, so will
+            // no nice way to determine length of compressed output, so will
             // need to be determined by the stream wrapped by GZipStream
 
             var positionBeforeWrite = GetInnerStreamPosition();
@@ -74,11 +74,20 @@ namespace Cryptonite.Yaal.GZip
 
         public override void Close()
         {
+            // no nice way to determine length of compressed I/O, so will
+            // need to be determined by the stream wrapped by GZipStream
+
+            var positionBeforeWrite = GetInnerStreamPosition();
             m_stream.Close();
+            var positionAfterWrite = GetInnerStreamPosition();
+
+            m_compressedLength += (positionAfterWrite - positionBeforeWrite);
         }
 
         private long GetInnerStreamPosition()
         {
+            // try to return position of the inner stream wrapped by
+            // GZipStream, or return 0
             try
             {
                 return m_innerStream.Position;
