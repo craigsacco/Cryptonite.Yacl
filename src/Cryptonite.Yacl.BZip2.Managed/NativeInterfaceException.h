@@ -7,7 +7,7 @@
 
 namespace Cryptonite
 {
-    namespace Yaal
+    namespace Yacl
     {
         namespace BZip2
         {
