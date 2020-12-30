@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # project definition
-project(Cryptonite.Yaal VERSION 0.0.0 LANGUAGES C CXX CSharp)
+project(Cryptonite.Yacl VERSION 0.0.0 LANGUAGES C CXX CSharp)
 
 # project output directories
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -17,12 +17,12 @@ set(LIB_XZUTILS_PATH ../../lib/xz-5.2.5)
 set(CMAKE_DOTNET_TARGET_FRAMEWORK_VERSION "v4.6.1")  # required for .NET Framework
 
 # library subdirectories
-add_subdirectory(Cryptonite.Yaal.Common)
-add_subdirectory(Cryptonite.Yaal.BZip2)
-add_subdirectory(Cryptonite.Yaal.BZip2.Native)
-add_subdirectory(Cryptonite.Yaal.BZip2.Managed)
-add_subdirectory(Cryptonite.Yaal.GZip)
-add_subdirectory(Cryptonite.Yaal.XZ.Native)
-add_subdirectory(Cryptonite.Yaal.Tests.Common)
-add_subdirectory(Cryptonite.Yaal.Tests.BZip2)
-add_subdirectory(Cryptonite.Yaal.Cmd)
+add_subdirectory(Cryptonite.Yacl.Common)
+add_subdirectory(Cryptonite.Yacl.BZip2)
+add_subdirectory(Cryptonite.Yacl.BZip2.Native)
+add_subdirectory(Cryptonite.Yacl.BZip2.Managed)
+add_subdirectory(Cryptonite.Yacl.GZip)
+add_subdirectory(Cryptonite.Yacl.XZ.Native)
+add_subdirectory(Cryptonite.Yacl.Tests.Common)
+add_subdirectory(Cryptonite.Yacl.Tests.BZip2)
+add_subdirectory(Cryptonite.Yacl.Cmd)
