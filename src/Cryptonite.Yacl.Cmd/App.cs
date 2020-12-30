@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using Cryptonite.Yacl.Common;
 using Cryptonite.Yacl.BZip2;
 using Cryptonite.Yacl.GZip;
+using Cryptonite.Yacl.XZ;
 using NDesk.Options;
 
 namespace Cryptonite.Yacl.Cmd
@@ -16,13 +17,15 @@ namespace Cryptonite.Yacl.Cmd
         public const String BZip2DecompressMethod = "bunzip2";
         public const String GZipCompressMethod = "gzip";
         public const String GZipDecompressMethod = "gunzip";
+        public const String LZMACompressMethod = "lzma";
 
         public static readonly IReadOnlyCollection<String> Methods = new ReadOnlyCollection<String>(
             new List<string> {
                 BZip2CompressMethod,
                 BZip2DecompressMethod,
                 GZipCompressMethod,
-                GZipDecompressMethod
+                GZipDecompressMethod,
+                LZMACompressMethod
             }
         );
 
@@ -155,6 +158,11 @@ namespace Cryptonite.Yacl.Cmd
                 case GZipDecompressMethod:
                     m_processSettings = new GZipDecompressSettings();
                     m_compress = false;
+                    break;
+
+                case LZMACompressMethod:
+                    m_processSettings = new LZMACompressSettings();
+                    m_compress = true;
                     break;
 
                 default:

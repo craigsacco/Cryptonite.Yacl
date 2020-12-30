@@ -12,7 +12,7 @@ namespace Cryptonite.Yacl.Common
 
         public abstract T Value { get; set; }
 
-        public abstract String DisplayValue { get; }
+        public virtual string DisplayValue => Value.ToString();
 
         public abstract Type UnderlyingType { get; }
 

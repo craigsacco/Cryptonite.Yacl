@@ -8,6 +8,7 @@ add_library(Cryptonite.Yacl.Common SHARED
     Setting.cs
     Settings.cs
     StreamUtilities.cs
+    UInt32Setting.cs
     )
 
 # language definition

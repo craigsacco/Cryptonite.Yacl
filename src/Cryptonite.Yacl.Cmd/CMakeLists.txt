@@ -7,6 +7,7 @@ target_link_libraries(Cryptonite.Yacl.Cmd
     Cryptonite.Yacl.Common
     Cryptonite.Yacl.BZip2
     Cryptonite.Yacl.GZip
+    Cryptonite.Yacl.XZ
     )
 
 # language definition

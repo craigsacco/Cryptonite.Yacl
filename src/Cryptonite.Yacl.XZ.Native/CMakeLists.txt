@@ -42,6 +42,7 @@ add_library(Cryptonite.Yacl.XZ.Native STATIC
     ${LIB_XZUTILS_PATH}/src/liblzma/common/stream_decoder.c
     ${LIB_XZUTILS_PATH}/src/liblzma/common/stream_flags_decoder.c
     ${LIB_XZUTILS_PATH}/src/liblzma/common/vli_decoder.c
+    ${LIB_XZUTILS_PATH}/src/liblzma/check/check.c
     ${LIB_XZUTILS_PATH}/src/liblzma/check/crc32_table.c
     ${LIB_XZUTILS_PATH}/src/liblzma/check/crc32_fast.c
     ${LIB_XZUTILS_PATH}/src/liblzma/check/crc64_table.c

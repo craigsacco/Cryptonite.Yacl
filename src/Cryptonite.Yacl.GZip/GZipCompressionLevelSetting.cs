@@ -19,7 +19,5 @@ namespace Cryptonite.Yacl.GZip
         public override String Name => "Compression Level";
 
         public override String AbbreviatedName => "compressionLevel";
-
-        public override string DisplayValue => Value.ToString();
     }
 }

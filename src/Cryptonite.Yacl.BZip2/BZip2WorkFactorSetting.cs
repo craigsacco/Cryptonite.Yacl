@@ -18,7 +18,5 @@ namespace Cryptonite.Yacl.BZip2
         public override String Name => "Work Factor";
 
         public override String AbbreviatedName => "workFactor";
-
-        public override string DisplayValue => Value.ToString();
     }
 }
