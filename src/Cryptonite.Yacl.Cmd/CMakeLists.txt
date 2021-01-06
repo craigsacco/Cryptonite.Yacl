@@ -1,23 +1,14 @@
-add_executable(Cryptonite.Yacl.Cmd
-    App.cs
-    )
+# .NET SDK project generation is not currently supported under CMake
+# see: https://gitlab.kitware.com/cmake/cmake/-/issues/20227
 
-# project dependencies
-target_link_libraries(Cryptonite.Yacl.Cmd
-    Cryptonite.Yacl.Common
-    Cryptonite.Yacl.BZip2
-    Cryptonite.Yacl.GZip
-    Cryptonite.Yacl.XZ
-    )
-
-# language definition
-set_property(TARGET Cryptonite.Yacl.Cmd PROPERTY LINKER_LANGUAGE CSharp)
-
-# .NET references
-set_property(TARGET Cryptonite.Yacl.Cmd PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Core"
-    )
-set_property(TARGET Cryptonite.Yacl.Cmd PROPERTY VS_PACKAGE_REFERENCES
-    "NDesk.Options.Core_1.2.5"
-    )
+# need to include a C# project file explicitly
+include_external_msproject(Cryptonite.Yacl.Cmd ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.Cmd.csproj PLATFORM AnyCPU
+	Cryptonite.Yacl.Common
+	Cryptonite.Yacl.BZip2
+	Cryptonite.Yacl.GZip
+	Cryptonite.Yacl.XZ
+	)
+set_target_properties(Cryptonite.Yacl.Cmd PROPERTIES
+	MAP_IMPORTED_CONFIG_DEBUG Debug
+	MAP_IMPORTED_CONFIG_RELEASE Release
+	)

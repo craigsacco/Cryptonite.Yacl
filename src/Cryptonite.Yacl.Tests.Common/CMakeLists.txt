@@ -1,25 +1,11 @@
-add_library(Cryptonite.Yacl.Tests.Common SHARED
-    TestResources.cs
-    #Properties/AssemblyInfo.cs
-    #Properties/Settings.Designer.cs
-    #Properties/Settings.settings
-    )
+# .NET SDK project generation is not currently supported under CMake
+# see: https://gitlab.kitware.com/cmake/cmake/-/issues/20227
 
-# language definition
-set_property(TARGET Cryptonite.Yacl.Tests.Common PROPERTY LINKER_LANGUAGE CSharp)
-
-# .NET references
-set_property(TARGET Cryptonite.Yacl.Tests.Common PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Core"
-    )
-set_property(TARGET Cryptonite.Yacl.Tests.Common PROPERTY VS_PACKAGE_REFERENCES
-    "xunit_2.4.1"
-    "xunit.abstractions_2.0.3"
-    "xunit.assert_2.4.1"
-    "xunit.core_2.4.1"
-    "xunit.extensibility.core_2.4.1"
-    "xunit.extensibility.execution_2.4.1"
-    "xunit.runner.console_2.4.1"
-    "xunit.runner.visualstudio_2.4.3"
-    )
+# need to include a C# project file explicitly
+include_external_msproject(Cryptonite.Yacl.Tests.Common ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.Tests.Common.csproj PLATFORM AnyCPU
+	Cryptonite.Yacl.Common
+	)
+set_target_properties(Cryptonite.Yacl.Tests.Common PROPERTIES
+	MAP_IMPORTED_CONFIG_DEBUG Debug
+	MAP_IMPORTED_CONFIG_RELEASE Release
+	)

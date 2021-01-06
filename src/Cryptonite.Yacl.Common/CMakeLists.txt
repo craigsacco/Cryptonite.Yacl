@@ -1,21 +1,9 @@
-add_library(Cryptonite.Yacl.Common SHARED
-    BaseStream.cs
-    BoolSetting.cs
-    EnumSetting.cs
-    Int32Setting.cs
-    ISetting.cs
-    ISettings.cs
-    Setting.cs
-    Settings.cs
-    StreamUtilities.cs
-    UInt32Setting.cs
-    )
+# .NET SDK project generation is not currently supported under CMake
+# see: https://gitlab.kitware.com/cmake/cmake/-/issues/20227
 
-# language definition
-set_property(TARGET Cryptonite.Yacl.Common PROPERTY LINKER_LANGUAGE CSharp)
-
-# .NET references
-set_property(TARGET Cryptonite.Yacl.Common PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Core"
-    )
+# need to include a C# project file explicitly
+include_external_msproject(Cryptonite.Yacl.Common ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.Common.csproj PLATFORM AnyCPU)
+set_target_properties(Cryptonite.Yacl.Common PROPERTIES
+	MAP_IMPORTED_CONFIG_DEBUG Debug
+	MAP_IMPORTED_CONFIG_RELEASE Release
+	)

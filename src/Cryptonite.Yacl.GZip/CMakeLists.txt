@@ -1,22 +1,11 @@
-add_library(Cryptonite.Yacl.GZip SHARED
-    GZipBaseStream.cs
-    GZipCompressionLevelSetting.cs
-    GZipCompressSettings.cs
-    GZipCompressStream.cs
-    GZipDecompressSettings.cs
-    GZipDecompressStream.cs
-    )
+# .NET SDK project generation is not currently supported under CMake
+# see: https://gitlab.kitware.com/cmake/cmake/-/issues/20227
 
-# project dependencies
-target_link_libraries(Cryptonite.Yacl.GZip
-    Cryptonite.Yacl.Common
-    )
-
-# language definition
-set_property(TARGET Cryptonite.Yacl.GZip PROPERTY LINKER_LANGUAGE CSharp)
-
-# .NET references
-set_property(TARGET Cryptonite.Yacl.GZip PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Core"
-    )
+# need to include a C# project file explicitly
+include_external_msproject(Cryptonite.Yacl.GZip ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.GZip.csproj PLATFORM AnyCPU
+	Cryptonite.Yacl.Common
+	)
+set_target_properties(Cryptonite.Yacl.GZip PROPERTIES
+	MAP_IMPORTED_CONFIG_DEBUG Debug
+	MAP_IMPORTED_CONFIG_RELEASE Release
+	)

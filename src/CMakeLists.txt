@@ -8,13 +8,15 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# only support Debug and Release configuration types
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release") 
+
 # 3rd-party library directories
 set(LIB_BZIP2_PATH ../../lib/bzip2-1.0.8)
 set(LIB_XZUTILS_PATH ../../lib/xz-5.2.5)
 
 # .NET target framework
-#set(CMAKE_DOTNET_TARGET_FRAMEWORK "netcoreapp3.1")  # required for .NET Core/Standard
-set(CMAKE_DOTNET_TARGET_FRAMEWORK_VERSION "v4.6.1")  # required for .NET Framework
+set(CMAKE_DOTNET_TARGET_FRAMEWORK "netcoreapp3.1")
 
 # library subdirectories
 add_subdirectory(Cryptonite.Yacl.Common)

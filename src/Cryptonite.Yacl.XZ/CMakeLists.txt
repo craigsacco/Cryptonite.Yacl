@@ -1,22 +1,12 @@
-add_library(Cryptonite.Yacl.XZ SHARED
-    LZMABaseStream.cs
-    LZMACompressionPresetSetting.cs
-    LZMACompressSettings.cs
-    LZMACompressStream.cs
-    LZMAExtremeCompressionSetting.cs
-    )
+# .NET SDK project generation is not currently supported under CMake
+# see: https://gitlab.kitware.com/cmake/cmake/-/issues/20227
 
-# project dependencies
-target_link_libraries(Cryptonite.Yacl.XZ
-    Cryptonite.Yacl.Common
-    Cryptonite.Yacl.XZ.Managed
-    )
-
-# language definition
-set_property(TARGET Cryptonite.Yacl.XZ PROPERTY LINKER_LANGUAGE CSharp)
-
-# .NET references
-set_property(TARGET Cryptonite.Yacl.XZ PROPERTY VS_DOTNET_REFERENCES
-    "System"
-    "System.Core"
-    )
+# need to include a C# project file explicitly
+include_external_msproject(Cryptonite.Yacl.XZ ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.XZ.csproj PLATFORM AnyCPU
+	Cryptonite.Yacl.Common
+	Cryptonite.Yacl.XZ.Managed
+	)
+set_target_properties(Cryptonite.Yacl.XZ PROPERTIES
+	MAP_IMPORTED_CONFIG_DEBUG Debug
+	MAP_IMPORTED_CONFIG_RELEASE Release
+	)
