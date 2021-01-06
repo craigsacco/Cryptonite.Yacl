@@ -1,7 +1,7 @@
+using Cryptonite.Yacl.Common;
 using System;
 using System.IO;
 using System.Linq;
-using Cryptonite.Yacl.Common;
 
 namespace Cryptonite.Yacl.XZ
 {

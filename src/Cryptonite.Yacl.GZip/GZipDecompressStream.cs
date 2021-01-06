@@ -1,7 +1,5 @@
-using System;
 using System.IO;
 using System.IO.Compression;
-using Cryptonite.Yacl.Common;
 
 namespace Cryptonite.Yacl.GZip
 {

@@ -23,7 +23,7 @@ namespace Cryptonite.Yacl.Common
                 OnPropertyChanged("DisplayValue");
             }
         }
-        
+
         public override Type UnderlyingType => typeof(Boolean);
 
         public override void Parse(String value)

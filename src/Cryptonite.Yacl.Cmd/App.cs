@@ -1,13 +1,13 @@
-using System;
-using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using Cryptonite.Yacl.Common;
 using Cryptonite.Yacl.BZip2;
+using Cryptonite.Yacl.Common;
 using Cryptonite.Yacl.GZip;
 using Cryptonite.Yacl.XZ;
 using NDesk.Options;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
 
 namespace Cryptonite.Yacl.Cmd
 {

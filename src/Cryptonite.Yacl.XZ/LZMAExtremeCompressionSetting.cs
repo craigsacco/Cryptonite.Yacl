@@ -1,5 +1,5 @@
-using System;
 using Cryptonite.Yacl.Common;
+using System;
 
 namespace Cryptonite.Yacl.XZ
 {

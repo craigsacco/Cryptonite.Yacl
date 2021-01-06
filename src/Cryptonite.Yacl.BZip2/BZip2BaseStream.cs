@@ -1,6 +1,6 @@
+using Cryptonite.Yacl.Common;
 using System;
 using System.IO;
-using Cryptonite.Yacl.Common;
 
 namespace Cryptonite.Yacl.BZip2
 {
@@ -9,7 +9,7 @@ namespace Cryptonite.Yacl.BZip2
         protected NativeInterface.StreamHandle m_streamHandle;
 
         public override bool CanSeek => false;
-        
+
         public override long Length => m_streamHandle.UncompressedLength;
 
         public override long CompressedLength => m_streamHandle.CompressedLength;

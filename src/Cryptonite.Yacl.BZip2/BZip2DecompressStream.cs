@@ -1,7 +1,6 @@
+using Cryptonite.Yacl.Common;
 using System;
 using System.IO;
-using System.Linq;
-using Cryptonite.Yacl.Common;
 
 namespace Cryptonite.Yacl.BZip2
 {
@@ -25,7 +24,7 @@ namespace Cryptonite.Yacl.BZip2
             StreamUtilities.ValidateBufferArguments(buffer, offset, count);
 
             byte[] data = NativeInterface.Decompress(m_streamHandle, count);
-            
+
             data.CopyTo(buffer, offset);
 
             return data.Length;

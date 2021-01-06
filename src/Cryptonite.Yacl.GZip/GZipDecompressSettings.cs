@@ -1,7 +1,6 @@
-using System;
-using System.IO;
-using System.Collections.Generic;
 using Cryptonite.Yacl.Common;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Cryptonite.Yacl.GZip
 {

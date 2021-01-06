@@ -1,8 +1,8 @@
+using Cryptonite.Yacl.BZip2;
+using Cryptonite.Yacl.Tests.Common;
 using System;
 using System.IO;
 using System.Text;
-using Cryptonite.Yacl.BZip2;
-using Cryptonite.Yacl.Tests.Common;
 using Xunit;
 
 namespace Cryptonite.Yacl.Tests.BZip2

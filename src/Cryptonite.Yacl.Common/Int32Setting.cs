@@ -18,7 +18,7 @@ namespace Cryptonite.Yacl.Common
         {
         }
 
-        protected Int32Setting(Int32 value, Int32 minimum, Int32 maximum,  Int32 step)
+        protected Int32Setting(Int32 value, Int32 minimum, Int32 maximum, Int32 step)
         {
             if (minimum >= maximum)
             {

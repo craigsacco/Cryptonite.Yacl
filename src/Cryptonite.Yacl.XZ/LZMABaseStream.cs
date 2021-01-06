@@ -1,6 +1,6 @@
+using Cryptonite.Yacl.Common;
 using System;
 using System.IO;
-using Cryptonite.Yacl.Common;
 
 namespace Cryptonite.Yacl.XZ
 {
@@ -9,7 +9,7 @@ namespace Cryptonite.Yacl.XZ
         protected NativeInterface.StreamHandle m_streamHandle;
 
         public override bool CanSeek => false;
-        
+
         public override long Length => m_streamHandle.UncompressedLength;
 
         public override long CompressedLength => m_streamHandle.CompressedLength;
