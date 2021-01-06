@@ -3,6 +3,7 @@
 		<OutputType>Exe</OutputType>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="NDesk.Options.Core" Version="1.2.5" />

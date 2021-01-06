@@ -2,6 +2,7 @@
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
+		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
@@ -18,6 +19,5 @@
 		<ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
 		<ProjectReference Include="..\Cryptonite.Yacl.BZip2\Cryptonite.Yacl.BZip2.csproj" />
 		<ProjectReference Include="..\Cryptonite.Yacl.Tests.Common\Cryptonite.Yacl.Tests.Common.csproj" />
-		<ProjectReference Include="$(SolutionDir)Cryptonite.Yacl.BZip2.Managed\Cryptonite.Yacl.BZip2.Managed.vcxproj" />
 	</ItemGroup>
 </Project>
