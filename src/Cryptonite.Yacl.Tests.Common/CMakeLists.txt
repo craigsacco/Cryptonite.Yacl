@@ -3,9 +3,9 @@
 
 # need to include a C# project file explicitly
 include_external_msproject(Cryptonite.Yacl.Tests.Common ${CMAKE_CURRENT_LIST_DIR}/Cryptonite.Yacl.Tests.Common.csproj PLATFORM AnyCPU
-	Cryptonite.Yacl.Common
-	)
+    Cryptonite.Yacl.Common
+    )
 set_target_properties(Cryptonite.Yacl.Tests.Common PROPERTIES
-	MAP_IMPORTED_CONFIG_DEBUG Debug
-	MAP_IMPORTED_CONFIG_RELEASE Release
-	)
+    MAP_IMPORTED_CONFIG_DEBUG Debug
+    MAP_IMPORTED_CONFIG_RELEASE Release
+    )

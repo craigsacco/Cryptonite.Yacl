@@ -1,17 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
-		<ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
-	</PropertyGroup>
-	<ItemGroup>
-		<PackageReference Include="NDesk.Options.Core" Version="1.2.5" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
-		<ProjectReference Include="..\Cryptonite.Yacl.BZip2\Cryptonite.Yacl.BZip2.csproj" />
-		<ProjectReference Include="..\Cryptonite.Yacl.GZip\Cryptonite.Yacl.GZip.csproj" />
-		<ProjectReference Include="..\Cryptonite.Yacl.XZ\Cryptonite.Yacl.XZ.csproj" />
-	</ItemGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
+        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="NDesk.Options.Core" Version="1.2.5" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
+        <ProjectReference Include="..\Cryptonite.Yacl.BZip2\Cryptonite.Yacl.BZip2.csproj" />
+        <ProjectReference Include="..\Cryptonite.Yacl.GZip\Cryptonite.Yacl.GZip.csproj" />
+        <ProjectReference Include="..\Cryptonite.Yacl.XZ\Cryptonite.Yacl.XZ.csproj" />
+    </ItemGroup>
 </Project>
