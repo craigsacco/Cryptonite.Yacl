@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 15.0.26124.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.Common", "Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj", "{D16C9A3B-D83A-455F-A217-4E70BC321768}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.Tests.Common", "Cryptonite.Yacl.Tests.Common\Cryptonite.Yacl.Tests.Common.csproj", "{AD255963-E01A-4B9A-9B82-8AB5B2226ADA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.GZip", "Cryptonite.Yacl.GZip\Cryptonite.Yacl.GZip.csproj", "{0201A3C8-956B-4874-8329-C8A191F106D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.Tests.GZip", "Cryptonite.Yacl.Tests.GZip\Cryptonite.Yacl.Tests.GZip.csproj", "{03B91DB9-580B-43E6-94D1-72C0B398A2EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.Tests.BZip2", "Cryptonite.Yacl.Tests.BZip2\Cryptonite.Yacl.Tests.BZip2.csproj", "{05B94E59-C30D-4E02-A143-77E63B3A42A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptonite.Yacl.BZip2", "Cryptonite.Yacl.BZip2\Cryptonite.Yacl.BZip2.csproj", "{C54A2E90-51AF-4DFF-9464-A78022C86B10}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D16C9A3B-D83A-455F-A217-4E70BC321768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16C9A3B-D83A-455F-A217-4E70BC321768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16C9A3B-D83A-455F-A217-4E70BC321768}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16C9A3B-D83A-455F-A217-4E70BC321768}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD255963-E01A-4B9A-9B82-8AB5B2226ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD255963-E01A-4B9A-9B82-8AB5B2226ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD255963-E01A-4B9A-9B82-8AB5B2226ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD255963-E01A-4B9A-9B82-8AB5B2226ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0201A3C8-956B-4874-8329-C8A191F106D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0201A3C8-956B-4874-8329-C8A191F106D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0201A3C8-956B-4874-8329-C8A191F106D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0201A3C8-956B-4874-8329-C8A191F106D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03B91DB9-580B-43E6-94D1-72C0B398A2EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B91DB9-580B-43E6-94D1-72C0B398A2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B91DB9-580B-43E6-94D1-72C0B398A2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B91DB9-580B-43E6-94D1-72C0B398A2EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05B94E59-C30D-4E02-A143-77E63B3A42A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05B94E59-C30D-4E02-A143-77E63B3A42A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05B94E59-C30D-4E02-A143-77E63B3A42A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05B94E59-C30D-4E02-A143-77E63B3A42A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {15AAFE5B-5DC6-4A76-93A9-DEE61DE99F59}
+	EndGlobalSection
+EndGlobal

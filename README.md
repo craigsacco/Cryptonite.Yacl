@@ -21,12 +21,12 @@ It provides support for the following formats:
 
 * GZip
 * BZip2 (Windows only)
-* XZ (Windows only)
 
 ## Dependencies
 
 * BZip2 1.0.8
 * XZ-Utils 5.2.5
+* Zstd 1.4.8
 * NDesk.Options 1.2.5
 * Xunit 2.4.1
 

@@ -1,11 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <OutDir>$(SolutionDir)bin\$(Configuration)</OutDir>
-        <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
-        <ProjectReference Include="$(SolutionDir)Cryptonite.Yacl.BZip2.Managed\Cryptonite.Yacl.BZip2.Managed.vcxproj" />
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="..\..\lib\build\bzip2\$(Configuration)\*.dll;..\..\lib\build\bzip2\$(Configuration)\*.so;..\..\lib\build\bzip2\$(Configuration)\*.dylib">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>

@@ -15,8 +15,8 @@ set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
 set(CMAKE_DOTNET_TARGET_FRAMEWORK "netcoreapp3.1")
 
 # paths to dependent 3rd-party library
-set(YACL_LIB_BZIP2_PATH ../../lib/bzip2-1.0.8)
-set(YACL_LIB_XZUTILS_PATH ../../lib/xz-5.2.5)
+set(YACL_LIB_BZIP2_PATH ../../lib/bzip2/1.0.8)
+set(YACL_LIB_XZUTILS_PATH ../../lib/xz-utils/5.2.5)
 
 # options
 option(YACL_GZIP "GZip support" ON)
