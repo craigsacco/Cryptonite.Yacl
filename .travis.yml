@@ -8,10 +8,9 @@ before_install:
   - pushd tools
   - wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2-Linux-x86_64.tar.gz
   - tar zxf cmake-3.19.2-Linux-x86_64.tar.gz
-  - ls
   - popd
 install:
-  - PATH=$PWD/tools/cmake-3.19.2/bin:$PATH ./cmake.sh
+  - PATH=$PWD/tools/cmake-3.19.2-Linux-x86_64/bin:$PATH ./cmake.sh
   - dotnet restore
 script:
   - dotnet build
