@@ -1,9 +1,11 @@
 language: csharp
-solution: Cryptonite.Yaal.sln
-os: windows
+solution: build/Cryptonite.Yacl.sln
+dist: bionic
 mono: none
-dotnet: none
+dotnet: 3.1
 install:
-  - cmake -S ./src -B ./build
+  - ./cmake.sh
+  - dotnet restore
 script:
-  - msbuild /p:Configuration=Release ./build/Cryptonite.Yaal.sln
+  - dotnet build
+  - dotnet test src/Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
