@@ -19,7 +19,11 @@ before_install:
   - PATH=$CMAKE_PATH/bin:$PATH ./cmake.sh
   - popd
 install:
+  - pushd src
   - dotnet restore
+  - popd
 script:
+  - pushd src
   - dotnet build
-  - dotnet test src/Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
+  - dotnet test Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
+  - popd
