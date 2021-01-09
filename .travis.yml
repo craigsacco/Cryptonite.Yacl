@@ -4,13 +4,13 @@ dist: bionic
 mono: none
 dotnet: 3.1
 before_install:
-  - mkdir -p tools
-  - pushd tools
-  - wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2-Linux-x86_64.tar.gz
-  - tar zxf cmake-3.19.2-Linux-x86_64.tar.gz
-  - popd
+  # solution generation not support on CMake under Linux - need to create solution directly
+  - dotnet new sln --name Cryptonite.Yacl
+  - dotnet sln Cryptonite.Yacl.sln add src/Cryptonite.Yacl.Common/Cryptonite.Yacl.Common.csproj
+  - dotnet sln Cryptonite.Yacl.sln add src/Cryptonite.Yacl.GZip/Cryptonite.Yacl.GZip.csproj
+  - dotnet sln Cryptonite.Yacl.sln add src/Cryptonite.Yacl.Tests.Common/Cryptonite.Yacl.Tests.Common.csproj
+  - dotnet sln Cryptonite.Yacl.sln add src/Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
 install:
-  - PATH=$PWD/tools/cmake-3.19.2-Linux-x86_64/bin:$PATH ./cmake.sh
   - dotnet restore
 script:
   - dotnet build
