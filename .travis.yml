@@ -9,7 +9,7 @@ before_install:
   - pushd tools
   - wget https://github.com/Kitware/CMake/releases/download/v3.19.2/cmake-3.19.2-Linux-x86_64.tar.gz
   - tar zxf cmake-3.19.2-Linux-x86_64.tar.gz
-  - CMAKE_PATH=$PWD/tools/cmake-3.19.2-Linux-x86_64
+  - CMAKE_PATH=$PWD/cmake-3.19.2-Linux-x86_64
   - popd
   # build native libraries beforehand
   - pushd lib/bzip2
