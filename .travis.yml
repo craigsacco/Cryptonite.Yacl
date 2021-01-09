@@ -5,10 +5,11 @@ mono: none
 dotnet: 3.1
 before_install:
   # build native libraries beforehand
-  - mkdir -p lib/build
-  - pushd lib/build
-  - cmake -S ..
-  - cmake --build .
+  - pushd lib/bzip2
+  - ./cmake.sh
+  - popd
+  - pushd lib/xz-utils
+  - ./cmake.sh
   - popd
 install:
   - dotnet restore
