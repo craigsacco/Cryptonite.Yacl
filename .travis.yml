@@ -1,5 +1,5 @@
 language: csharp
-solution: build/Cryptonite.Yacl.sln
+solution: Cryptonite.Yacl.sln
 dist: bionic
 mono: none
 dotnet: 3.1

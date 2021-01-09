@@ -1,3 +1,4 @@
 # ignore build outputs
 build
 obj
+bin
