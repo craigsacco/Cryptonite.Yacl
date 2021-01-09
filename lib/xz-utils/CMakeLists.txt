@@ -20,7 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 
 project(xz VERSION 5.2.5 LANGUAGES C)
 
@@ -49,9 +49,3 @@ if(MSVC)
     endif()
 endif()
 add_subdirectory(${XZ_UTILS_LIB_ROOT})
-
-# override output folder for liblzma
-set_target_properties(liblzma PROPERTIES
-    LIBRARY_OUTPUT_DIRECTORY_DEBUG ${CMAKE_BINARY_DIR}/bin/Debug
-    LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin/Release
-)
