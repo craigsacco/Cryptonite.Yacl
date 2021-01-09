@@ -6,6 +6,8 @@ namespace Cryptonite.Yacl.BZip2
 {
     public class BZip2CompressSettings : Settings
     {
+        public override bool IsCompressSettings => true;
+
         public BZip2BlockSizeSetting BlockSize { get; private set; }
 
         public BZip2WorkFactorSetting WorkFactor { get; private set; }
@@ -27,7 +29,7 @@ namespace Cryptonite.Yacl.BZip2
 
         public override BaseStream CreateStream(Stream innerStream)
         {
-            return new BZip2CompressStream(innerStream, this);
+            return new BZip2Stream(innerStream, this);
         }
     }
 }

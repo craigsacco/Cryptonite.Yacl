@@ -6,6 +6,8 @@ namespace Cryptonite.Yacl.GZip
 {
     public class GZipDecompressSettings : Settings
     {
+        public override bool IsCompressSettings => false;
+
         public override IList<ISetting> Items => new List<ISetting>();
 
         public GZipDecompressSettings() : base()
@@ -14,7 +16,7 @@ namespace Cryptonite.Yacl.GZip
 
         public override BaseStream CreateStream(Stream innerStream)
         {
-            return new GZipDecompressStream(innerStream, this);
+            return new GZipStream(innerStream, this);
         }
     }
 }

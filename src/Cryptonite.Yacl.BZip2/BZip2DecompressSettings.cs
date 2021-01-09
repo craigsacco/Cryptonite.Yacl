@@ -6,6 +6,8 @@ namespace Cryptonite.Yacl.BZip2
 {
     public class BZip2DecompressSettings : Settings
     {
+        public override bool IsCompressSettings => false;
+
         public BZip2SmallDecompressSetting SmallDecompress { get; private set; }
 
         public override IList<ISetting> Items
@@ -24,7 +26,7 @@ namespace Cryptonite.Yacl.BZip2
 
         public override BaseStream CreateStream(Stream innerStream)
         {
-            return new BZip2DecompressStream(innerStream, this);
+            return new BZip2Stream(innerStream, this);
         }
     }
 }

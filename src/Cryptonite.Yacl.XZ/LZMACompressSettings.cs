@@ -6,6 +6,8 @@ namespace Cryptonite.Yacl.XZ
 {
     public class LZMACompressSettings : Settings
     {
+        public override bool IsCompressSettings => true;
+
         public LZMACompressionPresetSetting CompressionPreset { get; private set; }
 
         public LZMAExtremeCompressionSetting ExtremeCompression { get; private set; }
@@ -27,7 +29,7 @@ namespace Cryptonite.Yacl.XZ
 
         public override BaseStream CreateStream(Stream innerStream)
         {
-            return new LZMACompressStream(innerStream, this);
+            return new LZMAStream(innerStream, this);
         }
     }
 }

@@ -1,4 +1,6 @@
 using System;
+using System.Text;
+using System.Linq;
 
 namespace Cryptonite.Yacl.Tests.Common
 {
@@ -43,5 +45,43 @@ Laoreet id donec ultrices tincidunt arcu non. Id nibh tortor id aliquet lectus p
 Tellus at urna condimentum mattis pellentesque id nibh tortor id. Amet justo donec enim diam. Orci phasellus egestas tellus rutrum tellus pellentesque eu tincidunt. Bibendum enim facilisis gravida neque convallis a cras semper auctor. Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt. Id aliquet risus feugiat in ante metus dictum. Ultricies leo integer malesuada nunc vel risus. Dapibus ultrices in iaculis nunc sed augue lacus. Id diam maecenas ultricies mi eget mauris pharetra et. Etiam sit amet nisl purus in. Id consectetur purus ut faucibus pulvinar elementum. Id aliquet risus feugiat in. Eu sem integer vitae justo eget magna fermentum. Sed id semper risus in hendrerit. Bibendum neque egestas congue quisque egestas diam. Ut placerat orci nulla pellentesque dignissim enim. Tristique magna sit amet purus gravida.
 
 Risus in hendrerit gravida rutrum quisque. Risus quis varius quam quisque. Nulla aliquet porttitor lacus luctus. Lorem mollis aliquam ut porttitor leo a. Orci porta non pulvinar neque. Eget egestas purus viverra accumsan. Ultrices mi tempus imperdiet nulla malesuada. Odio eu feugiat pretium nibh ipsum. Consequat interdum varius sit amet mattis vulputate enim. Hac habitasse platea dictumst quisque sagittis. Sit amet aliquam id diam maecenas ultricies mi. Arcu odio ut sem nulla. Cursus turpis massa tincidunt dui ut ornare lectus. Blandit cursus risus at ultrices. Tristique magna sit amet purus gravida quis blandit. Cras tincidunt lobortis feugiat vivamus at augue. Enim praesent elementum facilisis leo vel fringilla est ullamcorper. Varius quam quisque id diam vel quam elementum pulvinar. Sit amet massa vitae tortor condimentum lacinia.";
+
+        public static byte[] GenerateRandomData(int size)
+        {
+            var bytes = new byte[size];
+            var random = new Random();
+            random.NextBytes(bytes);
+            return bytes;
+        }
+
+        private static readonly byte[] TextPattern = Encoding.ASCII.GetBytes("ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-_=+");
+
+        public static byte[] GenerateTextData(int size)
+        {
+            if (size > 100)
+            {
+                byte[] bytes = new byte[size];
+                var offset = 0;
+                while (offset != size)
+                {
+                    var chunk = offset + 100 > size ? size - offset : 100;
+                    GenerateTextData(chunk).CopyTo(bytes, offset);
+                    offset += chunk;
+                }
+                return bytes;
+            }
+            else if (size == 100)
+            {
+                return TextPattern.ToArray();
+            }
+            else if (size < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(size), "Size cannot be negative");
+            }
+            else
+            {
+                return TextPattern.Take(size).ToArray();
+            }
+        }
     }
 }
