@@ -28,6 +28,13 @@ It provides support for the following formats:
 * NDesk.Options 1.2.5
 * Xunit 2.4.1
 
+## To Be Done
+
+* Use P/Invoke instead of C++/CLI to support non-Windows platforms
+* XZ support is currently broken
+* Build on Windows platform via Travis CI
+* ZSTD support
+
 ## License
 
 This software is released under the MIT License.
