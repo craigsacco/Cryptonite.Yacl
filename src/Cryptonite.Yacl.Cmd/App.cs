@@ -18,6 +18,7 @@ namespace Cryptonite.Yacl.Cmd
         public const String GZipCompressMethod = "gzip";
         public const String GZipDecompressMethod = "gunzip";
         public const String LZMACompressMethod = "lzma";
+        public const String LZMADecompressMethod = "unlzma";
 
         public static readonly IReadOnlyCollection<String> Methods = new ReadOnlyCollection<String>(
             new List<string> {
@@ -25,7 +26,8 @@ namespace Cryptonite.Yacl.Cmd
                 BZip2DecompressMethod,
                 GZipCompressMethod,
                 GZipDecompressMethod,
-                LZMACompressMethod
+                LZMACompressMethod,
+                LZMADecompressMethod
             }
         );
 
@@ -33,7 +35,6 @@ namespace Cryptonite.Yacl.Cmd
         private FileInfo m_inputFile = null;
         private FileInfo m_outputFile = null;
         private ISettings m_processSettings = null;
-        private bool m_compress = false;
 
         public App()
         {
@@ -54,7 +55,7 @@ namespace Cryptonite.Yacl.Cmd
             }
             Console.WriteLine();
 
-            if (m_compress)
+            if (m_processSettings.IsCompressSettings)
             {
                 using (var inputStream = File.OpenRead(m_inputFile.FullName))
                 {
@@ -142,27 +143,26 @@ namespace Cryptonite.Yacl.Cmd
             {
                 case BZip2CompressMethod:
                     m_processSettings = new BZip2CompressSettings();
-                    m_compress = true;
                     break;
 
                 case BZip2DecompressMethod:
                     m_processSettings = new BZip2DecompressSettings();
-                    m_compress = false;
                     break;
 
                 case GZipCompressMethod:
                     m_processSettings = new GZipCompressSettings();
-                    m_compress = true;
                     break;
 
                 case GZipDecompressMethod:
                     m_processSettings = new GZipDecompressSettings();
-                    m_compress = false;
                     break;
 
                 case LZMACompressMethod:
                     m_processSettings = new LZMACompressSettings();
-                    m_compress = true;
+                    break;
+
+                case LZMADecompressMethod:
+                    m_processSettings = new LZMADecompressSettings();
                     break;
 
                 default:

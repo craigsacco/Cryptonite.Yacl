@@ -30,11 +30,20 @@ namespace Cryptonite.Yacl.XZ
                 settings.CompressionPreset.Value, settings.ExtremeCompression.Value);
         }
 
+        public LZMAStream(Stream innerStream, LZMADecompressSettings settings)
+            : base(innerStream, settings)
+        {
+            m_streamHandle = NativeInterface.BeginDecompress(innerStream);
+        }
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (CanRead)
             {
-                throw new NotImplementedException("Not implemented");
+                StreamUtilities.ValidateBufferArguments(buffer, offset, count);
+                byte[] data = NativeInterface.Decompress(m_streamHandle, count);
+                data.CopyTo(buffer, offset);
+                return data.Length;
             }
             else
             {
@@ -60,7 +69,7 @@ namespace Cryptonite.Yacl.XZ
         {
             if (CanWrite)
             {
-                throw new NotImplementedException("Not implemented");
+                NativeInterface.EndCompress(m_streamHandle);
             }
             else
             {

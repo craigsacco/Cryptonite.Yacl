@@ -76,7 +76,7 @@ namespace Cryptonite
                     }
 
                     // write data to output stream
-                    if (pStream->avail_out < BUFSIZ)
+                    if (pStream->avail_out != 0)
                     {
                         streamHandle->Stream->Write(streamHandle->WorkingBuffer, 0, BUFSIZ - pStream->avail_out);
                     }
@@ -148,32 +148,29 @@ namespace Cryptonite
 
             NativeInterface::StreamHandle^ NativeInterface::BeginDecompress(System::IO::Stream^ readStream)
             {
-                /*
                 // create stream
-                bz_stream* pStream = reinterpret_cast<bz_stream*>(malloc(sizeof(bz_stream)));
+                lzma_stream* pStream = reinterpret_cast<lzma_stream*>(malloc(sizeof(lzma_stream)));
                 if (pStream == nullptr)
                 {
                     throw gcnew System::OutOfMemoryException();
                 }
+                *pStream = LZMA_STREAM_INIT;
 
-                // initiate the decompression stream
-                pStream->bzalloc = nullptr;
-                pStream->bzfree = nullptr;
-                pStream->opaque = nullptr;
-                int ret = BZ2_bzDecompressInit(pStream, verbosity, small ? 1 : 0);
-                if (ret != BZ_OK)
+                // initiate the encoder
+                int ret = lzma_stream_decoder(pStream, UINT64_MAX, LZMA_CONCATENATED);
+                if (ret != LZMA_OK)
                 {
                     free(pStream);
                     throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
                 };
 
+
                 // return handle
                 pStream->avail_in = 0;
-                */
                 StreamHandle^ streamHandle = gcnew StreamHandle();
-                //streamHandle->LZMAStreamPointer = gcnew System::IntPtr(pStream);
+                streamHandle->LZMAStreamPointer = gcnew System::IntPtr(pStream);
                 streamHandle->Stream = readStream;
-                //streamHandle->WorkingBuffer = gcnew array<System::Byte>(BZ_MAX_UNUSED);
+                streamHandle->WorkingBuffer = gcnew array<System::Byte>(BUFSIZ);
                 streamHandle->IsWriting = false;
                 streamHandle->IsEnded = false;
                 streamHandle->CompressedLength = 0;
@@ -185,15 +182,13 @@ namespace Cryptonite
             {
                 return gcnew array<System::Byte>(maxSize);
 
-
-                /*
-                if (streamHandle->IsWriting == true || streamHandle->LZMAStreamPointer->ToPointer() == nullptr)
+                if (streamHandle->IsWriting == false || streamHandle->LZMAStreamPointer->ToPointer() == nullptr)
                 {
                     throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
 
                 // recast stream pointer
-                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
+                lzma_stream* pStream = reinterpret_cast<lzma_stream*>(streamHandle->LZMAStreamPointer->ToPointer());
 
                 // bail early if maximum size is zero
                 if (maxSize == 0)
@@ -205,29 +200,29 @@ namespace Cryptonite
                 array<System::Byte>^ outputData = gcnew array<System::Byte>(maxSize);
                 pin_ptr<System::Byte> pOutputData = &outputData[0];
                 pStream->avail_out = outputData->Length;
-                pStream->next_out = reinterpret_cast<char*>(pOutputData);
+                pStream->next_out = pOutputData;
                 pin_ptr<System::Byte> pCompressedData = &streamHandle->WorkingBuffer[0];
                 while (true)
                 {
                     // read in next chunk from stream
                     if (pStream->avail_in == 0)
                     {
-                        pStream->avail_in = streamHandle->Stream->Read(streamHandle->WorkingBuffer, 0, streamHandle->WorkingBuffer->Length);;
-                        pStream->next_in = reinterpret_cast<char*>(pCompressedData);
+                        pStream->avail_in = streamHandle->Stream->Read(streamHandle->WorkingBuffer, 0, streamHandle->WorkingBuffer->Length);
+                        pStream->next_in = pCompressedData;
                     }
 
                     bool done = false;
                     if (pStream->avail_in != 0)
                     {
                         // decompress chunk
-                        int ret = BZ2_bzDecompress(pStream);
-                        if (ret != BZ_OK && ret != BZ_STREAM_END)
+                        int ret = lzma_code(pStream, LZMA_RUN);
+                        if (ret != LZMA_OK && ret != LZMA_STREAM_END)
                         {
                             throw NativeInterfaceException::CreateException(static_cast<NativeInterfaceException::ErrorType>(ret));
                         }
 
                         // if reached the end of stream then truncate return buffer
-                        if (ret == BZ_STREAM_END)
+                        if (ret == LZMA_STREAM_END)
                         {
                             done = true;
                             System::Array::Resize(outputData, maxSize - pStream->avail_out);
@@ -250,12 +245,12 @@ namespace Cryptonite
                     if (done)
                     {
                         // update lengths
-                        streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
-                        streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
-                        return outputData;
+                        uint64_t progressIn, progressOut;
+                        lzma_get_progress(pStream, &progressIn, &progressOut);
+                        streamHandle->CompressedLength = static_cast<int64_t>(progressIn);
+                        streamHandle->UncompressedLength = static_cast<int64_t>(progressOut);
                     }
                 }
-                */
             }
 
             void NativeInterface::EndDecompress(StreamHandle^ streamHandle)
@@ -264,22 +259,17 @@ namespace Cryptonite
                 {
                     throw NativeInterfaceException::CreateException(NativeInterfaceException::ErrorType::StreamHandleError);
                 }
-                /*
+                
                 // recast stream pointer
-                bz_stream* pStream = reinterpret_cast<bz_stream*>(streamHandle->BZipStreamPointer->ToPointer());
+                lzma_stream* pStream = reinterpret_cast<lzma_stream*>(streamHandle->LZMAStreamPointer->ToPointer());
 
                 // complete the decompression process and free resources
-                BZ2_bzDecompressEnd(pStream);
-
-                // update lengths
-                streamHandle->CompressedLength = (static_cast<int64_t>(pStream->total_in_hi32) << 32) + pStream->total_in_lo32;
-                streamHandle->UncompressedLength = (static_cast<int64_t>(pStream->total_out_hi32) << 32) + pStream->total_out_lo32;
+                lzma_end(pStream);
 
                 // free resources
                 free(pStream);
-                streamHandle->BZipStreamPointer = System::IntPtr::Zero;
+                streamHandle->LZMAStreamPointer = System::IntPtr::Zero;
                 streamHandle->IsEnded = true;
-                */
             }
         }
     }
