@@ -3,6 +3,11 @@ solution: build/Cryptonite.Yacl.sln
 dist: bionic
 mono: none
 dotnet: 3.1
+before_install:
+  - wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /etc/apt/trusted.gpg.d/kitware.gpg
+  - sudo apt-add-repository 'deb https://apt.kitware.com/ubuntu/ bionic main'
+  - sudo apt-get update
+  - sudo apt-get install -y cmake
 install:
   - ./cmake.sh
   - dotnet restore
