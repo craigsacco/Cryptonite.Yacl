@@ -10,6 +10,8 @@ main    | [![Build Status](https://travis-ci.com/craigsacco/Cryptonite.Yacl.svg?
 
 **This is an experimental project to teach myself C#, C++/CLI and P/Invoke.**
 
+**YACL** = **Y**et **A**nother **C**ompression **L**ibrary
+
 Cryptonite.Yacl is a compression library integrating well-known compression formats, using the
 standard System.IO.Stream interface for compressing and decompressing data.
 
