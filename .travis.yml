@@ -8,7 +8,9 @@ before_install:
   - pushd lib
   - mkdir -p build
   - cmake -B build -S .
-  - cmake --build build
+  - pushd build
+  - make
+  - popd
   - popd
 install:
   - dotnet restore
