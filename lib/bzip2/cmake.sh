@@ -3,7 +3,7 @@
 set -e
 
 mkdir -p build
-cd build
+pushd build
 cmake ..
 cmake --build .
 popd
