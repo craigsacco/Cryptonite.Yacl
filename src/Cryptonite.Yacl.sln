@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryptonite.Yacl.Tests.BZip2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptonite.Yacl.BZip2", "Cryptonite.Yacl.BZip2\Cryptonite.Yacl.BZip2.csproj", "{C54A2E90-51AF-4DFF-9464-A78022C86B10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryptonite.Yacl.Cmd", "Cryptonite.Yacl.Cmd\Cryptonite.Yacl.Cmd.csproj", "{6152E894-36A7-4CFF-8571-803D13D480EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C54A2E90-51AF-4DFF-9464-A78022C86B10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6152E894-36A7-4CFF-8571-803D13D480EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6152E894-36A7-4CFF-8571-803D13D480EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6152E894-36A7-4CFF-8571-803D13D480EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6152E894-36A7-4CFF-8571-803D13D480EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

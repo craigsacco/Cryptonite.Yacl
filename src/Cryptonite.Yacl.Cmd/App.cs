@@ -25,13 +25,16 @@
 using Cryptonite.Yacl.BZip2;
 using Cryptonite.Yacl.Common;
 using Cryptonite.Yacl.GZip;
-using Cryptonite.Yacl.XZ;
 using NDesk.Options;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+
+#if false
+using Cryptonite.Yacl.XZ;
+#endif
 
 namespace Cryptonite.Yacl.Cmd
 {
@@ -41,8 +44,10 @@ namespace Cryptonite.Yacl.Cmd
         public const String BZip2DecompressMethod = "bunzip2";
         public const String GZipCompressMethod = "gzip";
         public const String GZipDecompressMethod = "gunzip";
+#if false
         public const String LZMACompressMethod = "lzma";
         public const String LZMADecompressMethod = "unlzma";
+#endif
 
         public static readonly IReadOnlyCollection<String> Methods = new ReadOnlyCollection<String>(
             new List<string> {
@@ -50,8 +55,10 @@ namespace Cryptonite.Yacl.Cmd
                 BZip2DecompressMethod,
                 GZipCompressMethod,
                 GZipDecompressMethod,
+#if false
                 LZMACompressMethod,
-                LZMADecompressMethod
+                LZMADecompressMethod,
+#endif
             }
         );
 
@@ -181,6 +188,7 @@ namespace Cryptonite.Yacl.Cmd
                     m_processSettings = new GZipDecompressSettings();
                     break;
 
+#if false
                 case LZMACompressMethod:
                     m_processSettings = new LZMACompressSettings();
                     break;
@@ -188,6 +196,7 @@ namespace Cryptonite.Yacl.Cmd
                 case LZMADecompressMethod:
                     m_processSettings = new LZMADecompressSettings();
                     break;
+#endif
 
                 default:
                     throw new InvalidOperationException(@"Method name {m_method} is not handled");
