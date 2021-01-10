@@ -3,6 +3,23 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
+    <PropertyGroup>
+        <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Windows))">
+            pushd "$(SolutionDir)..\lib\bzip2
+            powershell .\cmake.ps1
+            popd
+        </PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Linux))">
+            pushd "$(SolutionDir)..\lib\bzip2
+            ./cmake.sh
+            popd
+        </PreBuildEvent>
+        <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(MacOSX))">
+            pushd "$(SolutionDir)..\lib\bzip2
+            ./cmake.sh
+            popd
+        </PreBuildEvent>
+    </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
     </ItemGroup>
