@@ -5,13 +5,13 @@
     </PropertyGroup>
     <PropertyGroup>
         <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Windows))">
-            pushd $(SolutionDir)..\lib\bzip2 &amp;&amp; powershell .\cmake.ps1 &amp;&amp; popd
+            cd $(SolutionDir)..\lib\bzip2 &amp;&amp; powershell .\cmake.ps1
         </PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Linux))">
-            cd $(SolutionDir)../lib/bzip2 &amp;&amp; ./cmake.sh &amp;&amp; cd $(SolutionDir)
+            cd $(SolutionDir)../lib/bzip2 &amp;&amp; sh ./cmake.sh
         </PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(MacOSX))">
-            cd $(SolutionDir)../lib/bzip2 &amp;&amp; ./cmake.sh &amp;&amp; cd $(SolutionDir)
+            cd $(SolutionDir)../lib/bzip2 &amp;&amp; sh ./cmake.sh
         </PreBuildEvent>
     </PropertyGroup>
     <ItemGroup>
