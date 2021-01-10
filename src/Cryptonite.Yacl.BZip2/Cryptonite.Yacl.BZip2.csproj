@@ -4,21 +4,9 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <PropertyGroup>
-        <PreBuildEvent Condition="($([MSBuild]::IsOsPlatform(Windows))) AND (!Exists('$(OutDir)/libbz2.dll'))">
-            cd $(ProjectDir)..\..\lib\bzip2
+        <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Windows))">
+            cd $(SolutionDir)..\..\lib\bzip2
             powershell .\cmake.ps1
-        </PreBuildEvent>
-        <PreBuildEvent Condition="($([MSBuild]::IsOsPlatform(Linux))) AND (!Exists('$(OutDir)/libbz2.so'))">
-            cd $(ProjectDir)../../lib/bzip2
-            mkdir -p build
-            cmake -S . -B build
-            cmake --build build
-        </PreBuildEvent>
-        <PreBuildEvent Condition="($([MSBuild]::IsOsPlatform(MacOSX))) AND (!Exists('$(OutDir)/libbz2.dylib'))">
-            cd $(ProjectDir)../../lib/bzip2
-            mkdir -p build
-            cmake -S . -B build
-            cmake --build build
         </PreBuildEvent>
     </PropertyGroup>
     <ItemGroup>

@@ -11,6 +11,13 @@ before_install:
   - tar zxf cmake-3.19.2-Linux-x86_64.tar.gz
   - CMAKE_PATH=$PWD/cmake-3.19.2-Linux-x86_64
   - popd
+  # build native libraries beforehand
+  - pushd lib/bzip2
+  - PATH=$CMAKE_PATH/bin:$PATH ./cmake.sh
+  - popd
+  - pushd lib/xz-utils
+  - PATH=$CMAKE_PATH/bin:$PATH ./cmake.sh
+  - popd
 install:
   # download nuget packages
   - pushd src
@@ -19,7 +26,7 @@ install:
 script:
   # build the project - prebuild step will invoke newer version of CMake
   - pushd src
-  - PATH=$CMAKE_PATH/bin:$PATH dotnet build
+  - dotnet build
   # run unit tests
   - dotnet test Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
   - dotnet test Cryptonite.Yacl.Tests.BZip2/Cryptonite.Yacl.Tests.BZip2.csproj
