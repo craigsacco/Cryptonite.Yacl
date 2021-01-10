@@ -26,15 +26,15 @@ using System;
 
 namespace Cryptonite.Yacl.Common
 {
-    public abstract class BoolSetting : Setting<Boolean>
+    public abstract class BoolSetting : Setting<bool>
     {
-        protected BoolSetting(Boolean value)
+        protected BoolSetting(bool value)
         {
             Value = value;
         }
 
-        private Boolean m_value;
-        public override Boolean Value
+        private bool m_value;
+        public override bool Value
         {
             get
             {
@@ -48,11 +48,11 @@ namespace Cryptonite.Yacl.Common
             }
         }
 
-        public override Type UnderlyingType => typeof(Boolean);
+        public override Type UnderlyingType => typeof(bool);
 
-        public override void Parse(String value)
+        public override void Parse(string value)
         {
-            Value = Boolean.Parse(value);
+            Value = bool.Parse(value);
         }
     }
 }

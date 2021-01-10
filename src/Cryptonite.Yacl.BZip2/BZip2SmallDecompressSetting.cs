@@ -29,19 +29,19 @@ namespace Cryptonite.Yacl.BZip2
 {
     public class BZip2SmallDecompressSetting : BoolSetting
     {
-        public const Boolean DefaultValue = false;
+        public const bool DefaultValue = false;
 
         public BZip2SmallDecompressSetting() : this(DefaultValue)
         {
         }
 
-        public BZip2SmallDecompressSetting(Boolean value) : base(value)
+        public BZip2SmallDecompressSetting(bool value) : base(value)
         {
         }
 
-        public override String Name => "Small Decompress Mode?";
+        public override string Name => "Small Decompress Mode?";
 
-        public override String AbbreviatedName => "smallDecompress";
+        public override string AbbreviatedName => "smallDecompress";
 
         public override string DisplayValue => Value ? "Yes" : "No";
     }

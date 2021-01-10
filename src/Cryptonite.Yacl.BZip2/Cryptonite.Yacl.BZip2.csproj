@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\Cryptonite.Yacl.Common\Cryptonite.Yacl.Common.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\..\lib\build\bzip2\$(Configuration)\*.dll;..\..\lib\build\bzip2\$(Configuration)\*.so;..\..\lib\build\bzip2\$(Configuration)\*.dylib">
+        <Content Include="..\..\lib\bzip2\build\$(Configuration)\*.dll;..\..\lib\bzip2\build\$(Configuration)\*.pdb;..\..\lib\bzip2\build\$(Configuration)\*.so;..\..\lib\bzip2\build\$(Configuration)\*.dylib">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

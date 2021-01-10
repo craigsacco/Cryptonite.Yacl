@@ -26,23 +26,23 @@ using System;
 
 namespace Cryptonite.Yacl.Common
 {
-    public abstract class UInt32Setting : Setting<UInt32>
+    public abstract class uintSetting : Setting<uint>
     {
-        public UInt32 Minimum { get; private set; }
+        public uint Minimum { get; private set; }
 
-        public UInt32 Maximum { get; private set; }
+        public uint Maximum { get; private set; }
 
-        public UInt32 Step { get; private set; }
+        public uint Step { get; private set; }
 
-        protected UInt32Setting(UInt32 value) : this(value, UInt32.MinValue, UInt32.MaxValue)
+        protected uintSetting(uint value) : this(value, uint.MinValue, uint.MaxValue)
         {
         }
 
-        protected UInt32Setting(UInt32 value, UInt32 minimum, UInt32 maximum) : this(value, minimum, maximum, 1)
+        protected uintSetting(uint value, uint minimum, uint maximum) : this(value, minimum, maximum, 1)
         {
         }
 
-        protected UInt32Setting(UInt32 value, UInt32 minimum, UInt32 maximum, UInt32 step)
+        protected uintSetting(uint value, uint minimum, uint maximum, uint step)
         {
             if (minimum >= maximum)
             {
@@ -60,8 +60,8 @@ namespace Cryptonite.Yacl.Common
             Value = value;
         }
 
-        private UInt32 m_value;
-        public override UInt32 Value
+        private uint m_value;
+        public override uint Value
         {
             get
             {
@@ -69,8 +69,8 @@ namespace Cryptonite.Yacl.Common
             }
             set
             {
-                if ((Minimum != UInt32.MinValue && value < Minimum) ||
-                    (Maximum != UInt32.MaxValue && value > Maximum))
+                if ((Minimum != uint.MinValue && value < Minimum) ||
+                    (Maximum != uint.MaxValue && value > Maximum))
                 {
                     throw new ArgumentOutOfRangeException("Value is not within the range for this type");
                 }
@@ -86,11 +86,11 @@ namespace Cryptonite.Yacl.Common
             }
         }
 
-        public override Type UnderlyingType => typeof(Int32);
+        public override Type UnderlyingType => typeof(uint);
 
-        public override void Parse(String value)
+        public override void Parse(string value)
         {
-            Value = UInt32.Parse(value);
+            Value = uint.Parse(value);
         }
     }
 }

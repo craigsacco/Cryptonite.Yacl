@@ -26,23 +26,23 @@ using System;
 
 namespace Cryptonite.Yacl.Common
 {
-    public abstract class Int32Setting : Setting<Int32>
+    public abstract class Int32Setting : Setting<int>
     {
-        public Int32 Minimum { get; private set; }
+        public int Minimum { get; private set; }
 
-        public Int32 Maximum { get; private set; }
+        public int Maximum { get; private set; }
 
-        public Int32 Step { get; private set; }
+        public int Step { get; private set; }
 
-        protected Int32Setting(Int32 value) : this(value, Int32.MinValue, Int32.MaxValue)
+        protected Int32Setting(int value) : this(value, int.MinValue, int.MaxValue)
         {
         }
 
-        protected Int32Setting(Int32 value, Int32 minimum, Int32 maximum) : this(value, minimum, maximum, 1)
+        protected Int32Setting(int value, int minimum, int maximum) : this(value, minimum, maximum, 1)
         {
         }
 
-        protected Int32Setting(Int32 value, Int32 minimum, Int32 maximum, Int32 step)
+        protected Int32Setting(int value, int minimum, int maximum, int step)
         {
             if (minimum >= maximum)
             {
@@ -60,8 +60,8 @@ namespace Cryptonite.Yacl.Common
             Value = value;
         }
 
-        private Int32 m_value;
-        public override Int32 Value
+        private int m_value;
+        public override int Value
         {
             get
             {
@@ -69,8 +69,8 @@ namespace Cryptonite.Yacl.Common
             }
             set
             {
-                if ((Minimum != Int32.MinValue && value < Minimum) ||
-                    (Maximum != Int32.MaxValue && value > Maximum))
+                if ((Minimum != int.MinValue && value < Minimum) ||
+                    (Maximum != int.MaxValue && value > Maximum))
                 {
                     throw new ArgumentOutOfRangeException("Value is not within the range for this type");
                 }
@@ -86,11 +86,11 @@ namespace Cryptonite.Yacl.Common
             }
         }
 
-        public override Type UnderlyingType => typeof(Int32);
+        public override Type UnderlyingType => typeof(int);
 
-        public override void Parse(String value)
+        public override void Parse(string value)
         {
-            Value = Int32.Parse(value);
+            Value = int.Parse(value);
         }
     }
 }

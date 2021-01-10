@@ -29,7 +29,7 @@ namespace Cryptonite.Yacl.Common
     public abstract class BaseStream : Stream
     {
         protected Stream m_innerStream;
-        private readonly bool m_isCompressStream;
+        protected readonly bool m_isCompressStream;
 
         public abstract long CompressedLength { get; }
 
@@ -41,6 +41,7 @@ namespace Cryptonite.Yacl.Common
 
         protected BaseStream(Stream innerStream, ISettings settings)
         {
+            m_innerStream = innerStream;
             m_isCompressStream = settings.IsCompressSettings;
         }
     }

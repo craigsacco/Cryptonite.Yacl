@@ -30,9 +30,9 @@ namespace Cryptonite.Yacl.Common
 {
     public abstract class Setting<T> : ISetting, INotifyPropertyChanged
     {
-        public abstract String Name { get; }
+        public abstract string Name { get; }
 
-        public abstract String AbbreviatedName { get; }
+        public abstract string AbbreviatedName { get; }
 
         public abstract T Value { get; set; }
 
@@ -40,11 +40,11 @@ namespace Cryptonite.Yacl.Common
 
         public abstract Type UnderlyingType { get; }
 
-        public abstract void Parse(String value);
+        public abstract void Parse(string value);
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] String name = null)
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }

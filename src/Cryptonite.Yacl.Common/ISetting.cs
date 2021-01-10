@@ -28,14 +28,14 @@ namespace Cryptonite.Yacl.Common
 {
     public interface ISetting
     {
-        String Name { get; }
+        string Name { get; }
 
-        String AbbreviatedName { get; }
+        string AbbreviatedName { get; }
 
-        String DisplayValue { get; }
+        string DisplayValue { get; }
 
         Type UnderlyingType { get; }
 
-        void Parse(String value);
+        void Parse(string value);
     }
 }
