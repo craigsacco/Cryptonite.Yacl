@@ -10,12 +10,12 @@
             popd
         </PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(Linux))">
-            pushd "$(SolutionDir)..\lib\bzip2
+            pushd "$(SolutionDir)../lib/bzip2
             ./cmake.sh
             popd
         </PreBuildEvent>
         <PreBuildEvent Condition="$([MSBuild]::IsOsPlatform(MacOSX))">
-            pushd "$(SolutionDir)..\lib\bzip2
+            pushd "$(SolutionDir)../lib/bzip2
             ./cmake.sh
             popd
         </PreBuildEvent>
