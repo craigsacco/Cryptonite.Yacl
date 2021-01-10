@@ -26,4 +26,5 @@ script:
   - pushd src
   - dotnet build
   - dotnet test Cryptonite.Yacl.Tests.GZip/Cryptonite.Yacl.Tests.GZip.csproj
+  - dotnet test Cryptonite.Yacl.Tests.BZip2/Cryptonite.Yacl.Tests.BZip2.csproj
   - popd
